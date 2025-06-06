@@ -1,0 +1,2364 @@
+2024/07/24 11:03:50 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.11.9 (main, Apr 19 2024, 16:48:06) [GCC 11.2.0]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 385770174
+    GPU 0,1,2,3,4,5,6,7: NVIDIA GeForce RTX 4090
+    CUDA_HOME: /usr/local/cuda
+    NVCC: Cuda compilation tools, release 12.2, V12.2.128
+    GCC: gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    PyTorch: 2.3.1+cu121
+    PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2022.2-Product Build 20220804 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.3.6 (Git Hash 86e6af5974177e513fd3fee58425e1063e7f1361)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX512
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.5  (built against CUDA 11.7)
+    - Built with CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=2.3.1, USE_CUDA=ON, USE_CUDNN=ON, USE_CUSPARSELT=1, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, 
+
+    TorchVision: 0.18.1+cu121
+    OpenCV: 4.10.0
+    MMEngine: 0.10.4
+
+Runtime environment:
+    cudnn_benchmark: True
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 385770174
+    Distributed launcher: pytorch
+    Distributed training: True
+    GPU number: 8
+------------------------------------------------------------
+
+2024/07/24 11:03:50 - mmengine - INFO - Config:
+_backend_args = None
+_multiscale_resize_transforms = [
+    dict(
+        transforms=[
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+        ],
+        type='Compose'),
+    dict(
+        transforms=[
+            dict(scale=(
+                320,
+                320,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    320,
+                    320,
+                ),
+                type='LetterResize'),
+        ],
+        type='Compose'),
+    dict(
+        transforms=[
+            dict(scale=(
+                960,
+                960,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    960,
+                    960,
+                ),
+                type='LetterResize'),
+        ],
+        type='Compose'),
+]
+affine_scale = 0.5
+albu_train_transforms = [
+    dict(p=0.01, type='Blur'),
+    dict(p=0.01, type='MedianBlur'),
+    dict(p=0.01, type='ToGray'),
+    dict(p=0.01, type='CLAHE'),
+]
+backend_args = None
+base_lr = 0.08
+batch_shapes_cfg = None
+classes = (
+    'pedestrian',
+    'people',
+    'bicycle',
+    'car',
+    'van',
+    'truck',
+    'tricycle',
+    'awning-tricycle',
+    'bus',
+    'motor',
+)
+close_mosaic_epochs = 10
+custom_hooks = [
+    dict(
+        ema_type='ExpMomentumEMA',
+        momentum=0.0001,
+        priority=49,
+        strict_load=False,
+        type='EMAHook',
+        update_buffers=True),
+    dict(
+        switch_epoch=290,
+        switch_pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(type='LoadYOLOAnnotations', with_bbox=True),
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=True,
+                pad_val=dict(img=114.0),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+            dict(
+                border_val=(
+                    114,
+                    114,
+                    114,
+                ),
+                max_aspect_ratio=100,
+                max_rotate_degree=0.0,
+                max_shear_degree=0.0,
+                scaling_ratio_range=(
+                    0.5,
+                    1.5,
+                ),
+                type='YOLOv5RandomAffine'),
+            dict(
+                bbox_params=dict(
+                    format='pascal_voc',
+                    label_fields=[
+                        'gt_bboxes_labels',
+                        'gt_ignore_flags',
+                    ],
+                    type='BboxParams'),
+                keymap=dict(gt_bboxes='bboxes', img='image'),
+                transforms=[
+                    dict(p=0.01, type='Blur'),
+                    dict(p=0.01, type='MedianBlur'),
+                    dict(p=0.01, type='ToGray'),
+                    dict(p=0.01, type='CLAHE'),
+                ],
+                type='mmdet.Albu'),
+            dict(type='YOLOv5HSVRandomAug'),
+            dict(prob=0.5, type='mmdet.RandomFlip'),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'flip',
+                    'flip_direction',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        type='mmdet.PipelineSwitchHook'),
+]
+data_root = '/mnt/datasets/VisDrone2019-DET-COCO/'
+dataset_type = 'YOLOv5CocoDataset'
+deepen_factor = 0.33
+default_hooks = dict(
+    checkpoint=dict(
+        interval=10, max_keep_ckpts=2, save_best='auto',
+        type='CheckpointHook'),
+    logger=dict(interval=50, type='LoggerHook'),
+    param_scheduler=dict(
+        lr_factor=0.01,
+        max_epochs=300,
+        scheduler_type='linear',
+        type='YOLOv5ParamSchedulerHook',
+        warmup_epochs=10),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(type='mmdet.DetVisualizationHook'))
+default_scope = 'mmdet'
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+img_scale = (
+    640,
+    640,
+)
+img_scales = [
+    (
+        640,
+        640,
+    ),
+    (
+        320,
+        320,
+    ),
+    (
+        960,
+        960,
+    ),
+]
+last_stage_out_channels = 1024
+last_transform = [
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+launcher = 'pytorch'
+load_from = None
+log_level = 'INFO'
+log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
+loss_bbox_weight = 7.5
+loss_cls_weight = 0.5
+loss_dfl_weight = 0.375
+lr_factor = 0.01
+max_aspect_ratio = 100
+max_epochs = 300
+max_keep_ckpts = 2
+model = dict(
+    backbone=dict(
+        act_cfg=dict(inplace=True, type='SiLU'),
+        arch='P5',
+        deepen_factor=0.33,
+        last_stage_out_channels=1024,
+        norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+        type='RemNet',
+        widen_factor=0.5),
+    bbox_head=dict(
+        bbox_coder=dict(type='YOLODistancePointBBoxCoder'),
+        head_module=dict(
+            act_cfg=dict(inplace=True, type='SiLU'),
+            featmap_strides=[
+                8,
+                16,
+                32,
+            ],
+            in_channels=[
+                256,
+                512,
+                1024,
+            ],
+            norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+            num_classes=10,
+            reg_max=16,
+            type='YOLOv8HeadModule',
+            widen_factor=0.5),
+        loss_bbox=dict(
+            bbox_format='xyxy',
+            iou_mode='ciou',
+            loss_weight=7.5,
+            reduction='sum',
+            return_iou=False,
+            type='YOLO_IoULoss'),
+        loss_cls=dict(
+            loss_weight=0.5,
+            reduction='none',
+            type='mmdet.CrossEntropyLoss',
+            use_sigmoid=True),
+        loss_dfl=dict(
+            loss_weight=0.375,
+            reduction='mean',
+            type='mmdet.DistributionFocalLoss'),
+        prior_generator=dict(
+            offset=0.5, strides=[
+                8,
+                16,
+                32,
+            ], type='mmdet.MlvlPointGenerator'),
+        type='YOLOv8Head'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            0.0,
+            0.0,
+            0.0,
+        ],
+        std=[
+            255.0,
+            255.0,
+            255.0,
+        ],
+        type='YOLOv5DetDataPreprocessor'),
+    neck=dict(
+        act_cfg=dict(inplace=True, type='SiLU'),
+        deepen_factor=0.33,
+        in_channels=[
+            256,
+            512,
+            1024,
+        ],
+        norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+        num_csp_blocks=3,
+        out_channels=[
+            256,
+            512,
+            1024,
+        ],
+        type='RemDetPAFPN',
+        widen_factor=0.5),
+    test_cfg=dict(
+        max_per_img=300,
+        multi_label=True,
+        nms=dict(iou_threshold=0.7, type='nms'),
+        nms_pre=30000,
+        score_thr=0.001),
+    train_cfg=dict(
+        assigner=dict(
+            alpha=0.5,
+            beta=6.0,
+            eps=1e-09,
+            num_classes=10,
+            topk=10,
+            type='BatchTaskAlignedAssigner',
+            use_ciou=True)),
+    type='YOLODetector')
+model_test_cfg = dict(
+    max_per_img=300,
+    multi_label=True,
+    nms=dict(iou_threshold=0.7, type='nms'),
+    nms_pre=30000,
+    score_thr=0.001)
+norm_cfg = dict(eps=0.001, momentum=0.03, type='BN')
+num_classes = 10
+num_det_layers = 3
+optim_wrapper = dict(
+    clip_grad=dict(max_norm=10.0),
+    constructor='YOLOv5OptimizerConstructor',
+    loss_scale='dynamic',
+    optimizer=dict(
+        batch_size_per_gpu=16,
+        lr=0.08,
+        momentum=0.937,
+        nesterov=True,
+        type='SGD',
+        weight_decay=0.0005),
+    type='AmpOptimWrapper')
+param_scheduler = None
+persistent_workers = True
+pre_transform = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadYOLOAnnotations', with_bbox=True),
+]
+resume = False
+save_epoch_intervals = 10
+strides = [
+    8,
+    16,
+    32,
+]
+tal_alpha = 0.5
+tal_beta = 6.0
+tal_topk = 10
+test_cfg = dict(type='TestLoop')
+test_dataloader = dict(
+    batch_size=16,
+    dataset=dict(
+        ann_file='annotations/VisDrone2019-DET_val_coco.json',
+        batch_shapes_cfg=None,
+        data_prefix=dict(img='images/val'),
+        data_root='/mnt/datasets/VisDrone2019-DET-COCO/',
+        metainfo=dict(
+            classes=(
+                'pedestrian',
+                'people',
+                'bicycle',
+                'car',
+                'van',
+                'truck',
+                'tricycle',
+                'awning-tricycle',
+                'bus',
+                'motor',
+            )),
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+            dict(_scope_='mmdet', type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                    'pad_param',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        test_mode=True,
+        type='YOLOv5CocoDataset'),
+    drop_last=False,
+    num_workers=8,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(
+    ann_file=
+    '/mnt/datasets/VisDrone2019-DET-COCO/annotations/VisDrone2019-DET_val_coco.json',
+    metric='bbox',
+    proposal_nums=(
+        100,
+        1,
+        10,
+    ),
+    type='mmdet.CocoMetric')
+test_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(scale=(
+        640,
+        640,
+    ), type='YOLOv5KeepRatioResize'),
+    dict(
+        allow_scale_up=False,
+        pad_val=dict(img=114),
+        scale=(
+            640,
+            640,
+        ),
+        type='LetterResize'),
+    dict(_scope_='mmdet', type='LoadAnnotations', with_bbox=True),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'scale_factor',
+            'pad_param',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+train_ann_file = 'annotations/VisDrone2019-DET_train_coco.json'
+train_batch_size_per_gpu = 16
+train_cfg = dict(
+    dynamic_intervals=[
+        (
+            290,
+            10,
+        ),
+    ],
+    max_epochs=300,
+    type='EpochBasedTrainLoop',
+    val_interval=10)
+train_data_prefix = 'images/train'
+train_dataloader = dict(
+    batch_size=16,
+    collate_fn=dict(type='yolov5_collate'),
+    dataset=dict(
+        ann_file='annotations/VisDrone2019-DET_train_coco.json',
+        data_prefix=dict(img='images/train'),
+        data_root='/mnt/datasets/VisDrone2019-DET-COCO/',
+        filter_cfg=dict(filter_empty_gt=False, min_size=32),
+        metainfo=dict(
+            classes=(
+                'pedestrian',
+                'people',
+                'bicycle',
+                'car',
+                'van',
+                'truck',
+                'tricycle',
+                'awning-tricycle',
+                'bus',
+                'motor',
+            )),
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(type='LoadYOLOAnnotations', with_bbox=True),
+            dict(
+                img_scale=(
+                    640,
+                    640,
+                ),
+                pad_val=114.0,
+                pre_transform=[
+                    dict(backend_args=None, type='LoadImageFromFile'),
+                    dict(type='LoadYOLOAnnotations', with_bbox=True),
+                ],
+                type='YOLO_Mosaic'),
+            dict(
+                border=(
+                    -320,
+                    -320,
+                ),
+                border_val=(
+                    114,
+                    114,
+                    114,
+                ),
+                max_aspect_ratio=100,
+                max_rotate_degree=0.0,
+                max_shear_degree=0.0,
+                scaling_ratio_range=(
+                    0.5,
+                    1.5,
+                ),
+                type='YOLOv5RandomAffine'),
+            dict(
+                bbox_params=dict(
+                    format='pascal_voc',
+                    label_fields=[
+                        'gt_bboxes_labels',
+                        'gt_ignore_flags',
+                    ],
+                    type='BboxParams'),
+                keymap=dict(gt_bboxes='bboxes', img='image'),
+                transforms=[
+                    dict(p=0.01, type='Blur'),
+                    dict(p=0.01, type='MedianBlur'),
+                    dict(p=0.01, type='ToGray'),
+                    dict(p=0.01, type='CLAHE'),
+                ],
+                type='mmdet.Albu'),
+            dict(type='YOLOv5HSVRandomAug'),
+            dict(prob=0.5, type='mmdet.RandomFlip'),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'flip',
+                    'flip_direction',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        type='YOLOv5CocoDataset'),
+    num_workers=8,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+train_num_workers = 8
+train_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadYOLOAnnotations', with_bbox=True),
+    dict(
+        img_scale=(
+            640,
+            640,
+        ),
+        pad_val=114.0,
+        pre_transform=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(type='LoadYOLOAnnotations', with_bbox=True),
+        ],
+        type='YOLO_Mosaic'),
+    dict(
+        border=(
+            -320,
+            -320,
+        ),
+        border_val=(
+            114,
+            114,
+            114,
+        ),
+        max_aspect_ratio=100,
+        max_rotate_degree=0.0,
+        max_shear_degree=0.0,
+        scaling_ratio_range=(
+            0.5,
+            1.5,
+        ),
+        type='YOLOv5RandomAffine'),
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+train_pipeline_stage2 = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadYOLOAnnotations', with_bbox=True),
+    dict(scale=(
+        640,
+        640,
+    ), type='YOLOv5KeepRatioResize'),
+    dict(
+        allow_scale_up=True,
+        pad_val=dict(img=114.0),
+        scale=(
+            640,
+            640,
+        ),
+        type='LetterResize'),
+    dict(
+        border_val=(
+            114,
+            114,
+            114,
+        ),
+        max_aspect_ratio=100,
+        max_rotate_degree=0.0,
+        max_shear_degree=0.0,
+        scaling_ratio_range=(
+            0.5,
+            1.5,
+        ),
+        type='YOLOv5RandomAffine'),
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+tta_model = dict(
+    tta_cfg=dict(max_per_img=300, nms=dict(iou_threshold=0.65, type='nms')),
+    type='mmdet.DetTTAModel')
+tta_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(
+        transforms=[
+            [
+                dict(
+                    transforms=[
+                        dict(scale=(
+                            640,
+                            640,
+                        ), type='YOLOv5KeepRatioResize'),
+                        dict(
+                            allow_scale_up=False,
+                            pad_val=dict(img=114),
+                            scale=(
+                                640,
+                                640,
+                            ),
+                            type='LetterResize'),
+                    ],
+                    type='Compose'),
+                dict(
+                    transforms=[
+                        dict(scale=(
+                            320,
+                            320,
+                        ), type='YOLOv5KeepRatioResize'),
+                        dict(
+                            allow_scale_up=False,
+                            pad_val=dict(img=114),
+                            scale=(
+                                320,
+                                320,
+                            ),
+                            type='LetterResize'),
+                    ],
+                    type='Compose'),
+                dict(
+                    transforms=[
+                        dict(scale=(
+                            960,
+                            960,
+                        ), type='YOLOv5KeepRatioResize'),
+                        dict(
+                            allow_scale_up=False,
+                            pad_val=dict(img=114),
+                            scale=(
+                                960,
+                                960,
+                            ),
+                            type='LetterResize'),
+                    ],
+                    type='Compose'),
+            ],
+            [
+                dict(prob=1.0, type='mmdet.RandomFlip'),
+                dict(prob=0.0, type='mmdet.RandomFlip'),
+            ],
+            [
+                dict(type='mmdet.LoadAnnotations', with_bbox=True),
+            ],
+            [
+                dict(
+                    meta_keys=(
+                        'img_id',
+                        'img_path',
+                        'ori_shape',
+                        'img_shape',
+                        'scale_factor',
+                        'pad_param',
+                        'flip',
+                        'flip_direction',
+                    ),
+                    type='mmdet.PackDetInputs'),
+            ],
+        ],
+        type='TestTimeAug'),
+]
+val_ann_file = 'annotations/VisDrone2019-DET_val_coco.json'
+val_batch_size_per_gpu = 16
+val_cfg = dict(type='ValLoop')
+val_data_prefix = 'images/val'
+val_dataloader = dict(
+    batch_size=16,
+    dataset=dict(
+        ann_file='annotations/VisDrone2019-DET_val_coco.json',
+        batch_shapes_cfg=None,
+        data_prefix=dict(img='images/val'),
+        data_root='/mnt/datasets/VisDrone2019-DET-COCO/',
+        metainfo=dict(
+            classes=(
+                'pedestrian',
+                'people',
+                'bicycle',
+                'car',
+                'van',
+                'truck',
+                'tricycle',
+                'awning-tricycle',
+                'bus',
+                'motor',
+            )),
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+            dict(_scope_='mmdet', type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                    'pad_param',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        test_mode=True,
+        type='YOLOv5CocoDataset'),
+    drop_last=False,
+    num_workers=8,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+val_evaluator = dict(
+    ann_file=
+    '/mnt/datasets/VisDrone2019-DET-COCO/annotations/VisDrone2019-DET_val_coco.json',
+    metric='bbox',
+    proposal_nums=(
+        100,
+        1,
+        10,
+    ),
+    type='mmdet.CocoMetric')
+val_interval_stage2 = 10
+val_num_workers = 8
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='mmdet.DetLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+weight_decay = 0.0005
+widen_factor = 0.5
+work_dir = '/mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s'
+
+2024/07/24 11:03:51 - mmengine - INFO - Using SyncBatchNorm()
+2024/07/24 11:03:51 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_load_checkpoint:
+(49          ) EMAHook                            
+ -------------------- 
+before_train:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+(NORMAL      ) PipelineSwitchHook                 
+ -------------------- 
+before_train_iter:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(9           ) YOLOv5ParamSchedulerHook           
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DetVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_save_checkpoint:
+(49          ) EMAHook                            
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DetVisualizationHook               
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+2024/07/24 11:03:55 - mmengine - INFO - Scaled weight_decay to 0.001
+2024/07/24 11:03:55 - mmengine - INFO - Optimizer groups: 70 .bias, 66 conv.weight, 64 other
+Name of parameter - Initialization information
+
+backbone.stem.conv.weight - torch.Size([32, 3, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stem.bn.weight - torch.Size([32]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stem.bn.bias - torch.Size([32]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.0.conv.weight - torch.Size([64, 32, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage1.0.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.0.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.proj.conv.weight - torch.Size([384, 64, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage1.1.proj.bn.weight - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.proj.bn.bias - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.rep.rbr_identity.weight - torch.Size([192]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.rep.rbr_identity.bias - torch.Size([192]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.rep.rbr_dense.conv.weight - torch.Size([192, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage1.1.rep.rbr_dense.bn.weight - torch.Size([192]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.rep.rbr_dense.bn.bias - torch.Size([192]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.rep.rbr_1x1.conv.weight - torch.Size([192, 192, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage1.1.rep.rbr_1x1.bn.weight - torch.Size([192]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.rep.rbr_1x1.bn.bias - torch.Size([192]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.cv2.conv.weight - torch.Size([64, 192, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage1.1.cv2.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage1.1.cv2.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.0.cv1.conv.weight - torch.Size([128, 64, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.0.cv1.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.0.cv1.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.0.cv2.conv.weight - torch.Size([128, 512, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.0.cv2.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.0.cv2.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.0.dwconv.conv.weight - torch.Size([128, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.0.dwconv.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.0.dwconv.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.proj.conv.weight - torch.Size([768, 128, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.1.proj.bn.weight - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.proj.bn.bias - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.rep.rbr_identity.weight - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.rep.rbr_identity.bias - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.rep.rbr_dense.conv.weight - torch.Size([384, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.1.rep.rbr_dense.bn.weight - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.rep.rbr_dense.bn.bias - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.rep.rbr_1x1.conv.weight - torch.Size([384, 384, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.1.rep.rbr_1x1.bn.weight - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.rep.rbr_1x1.bn.bias - torch.Size([384]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.cv2.conv.weight - torch.Size([128, 384, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage2.1.cv2.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage2.1.cv2.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.0.cv1.conv.weight - torch.Size([256, 128, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.0.cv1.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.0.cv1.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.0.cv2.conv.weight - torch.Size([256, 1024, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.0.cv2.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.0.cv2.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.0.dwconv.conv.weight - torch.Size([256, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.0.dwconv.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.0.dwconv.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.proj.conv.weight - torch.Size([1536, 256, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.1.proj.bn.weight - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.proj.bn.bias - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.rep.rbr_identity.weight - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.rep.rbr_identity.bias - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.rep.rbr_dense.conv.weight - torch.Size([768, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.1.rep.rbr_dense.bn.weight - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.rep.rbr_dense.bn.bias - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.rep.rbr_1x1.conv.weight - torch.Size([768, 768, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.1.rep.rbr_1x1.bn.weight - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.rep.rbr_1x1.bn.bias - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.m.0.conv.weight - torch.Size([768, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.1.m.0.bn.weight - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.m.0.bn.bias - torch.Size([768]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.cv2.conv.weight - torch.Size([256, 768, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage3.1.cv2.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage3.1.cv2.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.0.cv1.conv.weight - torch.Size([512, 256, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.0.cv1.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.0.cv1.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.0.cv2.conv.weight - torch.Size([512, 2048, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.0.cv2.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.0.cv2.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.0.dwconv.conv.weight - torch.Size([512, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.0.dwconv.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.0.dwconv.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.proj.conv.weight - torch.Size([3072, 512, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.1.proj.bn.weight - torch.Size([3072]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.proj.bn.bias - torch.Size([3072]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.rep.rbr_identity.weight - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.rep.rbr_identity.bias - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.rep.rbr_dense.conv.weight - torch.Size([1536, 1, 3, 3]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.1.rep.rbr_dense.bn.weight - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.rep.rbr_dense.bn.bias - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.rep.rbr_1x1.conv.weight - torch.Size([1536, 1536, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.1.rep.rbr_1x1.bn.weight - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.rep.rbr_1x1.bn.bias - torch.Size([1536]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.cv2.conv.weight - torch.Size([512, 1536, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.1.cv2.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.1.cv2.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.2.conv1.conv.weight - torch.Size([256, 512, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.2.conv1.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.2.conv1.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.2.conv2.conv.weight - torch.Size([512, 1024, 1, 1]): 
+Initialized by user-defined `init_weights` in RemNet  
+
+backbone.stage4.2.conv2.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+backbone.stage4.2.conv2.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.cv1.conv.weight - torch.Size([512, 768, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.0.cv1.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.cv1.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.cv2.conv.weight - torch.Size([256, 768, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.0.cv2.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.cv2.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.m.0.conv1.conv.weight - torch.Size([64, 256, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.0.m.0.conv1.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.m.0.conv1.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.m.0.conv2.conv.weight - torch.Size([256, 64, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.0.m.0.conv2.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.0.m.0.conv2.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.cv1.conv.weight - torch.Size([256, 384, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.1.cv1.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.cv1.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.cv2.conv.weight - torch.Size([128, 384, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.1.cv2.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.cv2.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.m.0.conv1.conv.weight - torch.Size([32, 128, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.1.m.0.conv1.bn.weight - torch.Size([32]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.m.0.conv1.bn.bias - torch.Size([32]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.m.0.conv2.conv.weight - torch.Size([128, 32, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.top_down_layers.1.m.0.conv2.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.top_down_layers.1.m.0.conv2.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.downsample_layers.0.conv.weight - torch.Size([128, 128, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.downsample_layers.0.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.downsample_layers.0.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.downsample_layers.1.conv.weight - torch.Size([256, 256, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.downsample_layers.1.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.downsample_layers.1.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.cv1.conv.weight - torch.Size([512, 384, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.0.cv1.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.cv1.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.cv2.conv.weight - torch.Size([256, 768, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.0.cv2.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.cv2.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.m.0.conv1.conv.weight - torch.Size([64, 256, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.0.m.0.conv1.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.m.0.conv1.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.m.0.conv2.conv.weight - torch.Size([256, 64, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.0.m.0.conv2.bn.weight - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.0.m.0.conv2.bn.bias - torch.Size([256]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.cv1.conv.weight - torch.Size([1024, 768, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.1.cv1.bn.weight - torch.Size([1024]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.cv1.bn.bias - torch.Size([1024]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.cv2.conv.weight - torch.Size([512, 1536, 1, 1]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.1.cv2.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.cv2.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.m.0.conv1.conv.weight - torch.Size([128, 512, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.1.m.0.conv1.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.m.0.conv1.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.m.0.conv2.conv.weight - torch.Size([512, 128, 3, 3]): 
+Initialized by user-defined `init_weights` in RemDetPAFPN  
+
+neck.bottom_up_layers.1.m.0.conv2.bn.weight - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+neck.bottom_up_layers.1.m.0.conv2.bn.bias - torch.Size([512]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.0.conv.weight - torch.Size([128, 128, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.0.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.0.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.1.conv.weight - torch.Size([128, 128, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.1.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.1.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.2.weight - torch.Size([10, 128, 1, 1]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.0.2.bias - torch.Size([10]): 
+Initialized by user-defined `init_weights` in YOLOv8HeadModule  
+
+bbox_head.head_module.cls_preds.1.0.conv.weight - torch.Size([128, 256, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.0.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.0.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.1.conv.weight - torch.Size([128, 128, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.1.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.1.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.2.weight - torch.Size([10, 128, 1, 1]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.1.2.bias - torch.Size([10]): 
+Initialized by user-defined `init_weights` in YOLOv8HeadModule  
+
+bbox_head.head_module.cls_preds.2.0.conv.weight - torch.Size([128, 512, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.0.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.0.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.1.conv.weight - torch.Size([128, 128, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.1.bn.weight - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.1.bn.bias - torch.Size([128]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.2.weight - torch.Size([10, 128, 1, 1]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.cls_preds.2.2.bias - torch.Size([10]): 
+Initialized by user-defined `init_weights` in YOLOv8HeadModule  
+
+bbox_head.head_module.reg_preds.0.0.conv.weight - torch.Size([64, 128, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.0.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.0.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.1.conv.weight - torch.Size([64, 64, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.1.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.1.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.2.weight - torch.Size([64, 64, 1, 1]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.0.2.bias - torch.Size([64]): 
+Initialized by user-defined `init_weights` in YOLOv8HeadModule  
+
+bbox_head.head_module.reg_preds.1.0.conv.weight - torch.Size([64, 256, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.0.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.0.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.1.conv.weight - torch.Size([64, 64, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.1.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.1.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.2.weight - torch.Size([64, 64, 1, 1]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.1.2.bias - torch.Size([64]): 
+Initialized by user-defined `init_weights` in YOLOv8HeadModule  
+
+bbox_head.head_module.reg_preds.2.0.conv.weight - torch.Size([64, 512, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.0.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.0.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.1.conv.weight - torch.Size([64, 64, 3, 3]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.1.bn.weight - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.1.bn.bias - torch.Size([64]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.2.weight - torch.Size([64, 64, 1, 1]): 
+The value is the same before and after calling `init_weights` of YOLODetector  
+
+bbox_head.head_module.reg_preds.2.2.bias - torch.Size([64]): 
+Initialized by user-defined `init_weights` in YOLOv8HeadModule  
+2024/07/24 11:03:56 - mmengine - WARNING - "FileClient" will be deprecated in future. Please use io functions in https://mmengine.readthedocs.io/en/latest/api/fileio.html#file-io
+2024/07/24 11:03:56 - mmengine - WARNING - "HardDiskBackend" is the alias of "LocalBackend" and the former will be deprecated in future.
+2024/07/24 11:03:56 - mmengine - INFO - Checkpoints will be saved to /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s.
+2024/07/24 11:04:19 - mmengine - INFO - Epoch(train)   [1][50/51]  base_lr: 8.0000e-02 lr: 3.9200e-03  eta: 1:56:12  time: 0.4572  data_time: 0.0225  memory: 19276  grad_norm: nan  loss: 1962.2495  loss_cls: 750.4761  loss_bbox: 691.2283  loss_dfl: 520.5450
+2024/07/24 11:04:28 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:04:41 - mmengine - INFO - Epoch(train)   [2][50/51]  base_lr: 8.0000e-02 lr: 7.9736e-03  eta: 1:50:51  time: 0.2558  data_time: 0.0215  memory: 22438  grad_norm: 493.5707  loss: 1190.1456  loss_cls: 428.2557  loss_bbox: 482.1688  loss_dfl: 279.7210
+2024/07/24 11:04:41 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:04:53 - mmengine - INFO - Epoch(train)   [3][50/51]  base_lr: 8.0000e-02 lr: 1.2000e-02  eta: 1:33:19  time: 0.2369  data_time: 0.0201  memory: 12781  grad_norm: 572.8168  loss: 959.8597  loss_cls: 355.5974  loss_bbox: 393.2830  loss_dfl: 210.9793
+2024/07/24 11:04:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:05:05 - mmengine - INFO - Epoch(train)   [4][50/51]  base_lr: 8.0000e-02 lr: 1.6000e-02  eta: 1:24:36  time: 0.2386  data_time: 0.0216  memory: 12168  grad_norm: 608.0295  loss: 859.3775  loss_cls: 315.8654  loss_bbox: 350.9385  loss_dfl: 192.5736
+2024/07/24 11:05:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:05:17 - mmengine - INFO - Epoch(train)   [5][50/51]  base_lr: 8.0000e-02 lr: 1.9973e-02  eta: 1:19:10  time: 0.2359  data_time: 0.0244  memory: 11941  grad_norm: 571.6807  loss: 804.7736  loss_cls: 294.2133  loss_bbox: 328.2424  loss_dfl: 182.3179
+2024/07/24 11:05:17 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:05:29 - mmengine - INFO - Epoch(train)   [6][50/51]  base_lr: 8.0000e-02 lr: 2.3919e-02  eta: 1:15:43  time: 0.2416  data_time: 0.0199  memory: 13194  grad_norm: 530.8394  loss: 760.7708  loss_cls: 275.1121  loss_bbox: 309.1941  loss_dfl: 176.4646
+2024/07/24 11:05:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:05:41 - mmengine - INFO - Epoch(train)   [7][50/51]  base_lr: 8.0000e-02 lr: 2.7838e-02  eta: 1:13:24  time: 0.2474  data_time: 0.0186  memory: 13542  grad_norm: 462.9124  loss: 729.7087  loss_cls: 261.1936  loss_bbox: 301.1902  loss_dfl: 167.3249
+2024/07/24 11:05:42 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:05:54 - mmengine - INFO - Epoch(train)   [8][50/51]  base_lr: 8.0000e-02 lr: 3.1730e-02  eta: 1:11:22  time: 0.2395  data_time: 0.0216  memory: 12728  grad_norm: 412.9822  loss: 689.8440  loss_cls: 243.4008  loss_bbox: 285.0175  loss_dfl: 161.4257
+2024/07/24 11:05:54 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:06:06 - mmengine - INFO - Epoch(train)   [9][50/51]  base_lr: 8.0000e-02 lr: 3.5595e-02  eta: 1:09:40  time: 0.2370  data_time: 0.0213  memory: 12982  grad_norm: 361.2361  loss: 662.1919  loss_cls: 228.7594  loss_bbox: 274.4868  loss_dfl: 158.9456
+2024/07/24 11:06:06 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:06:17 - mmengine - INFO - Epoch(train)  [10][50/51]  base_lr: 8.0000e-02 lr: 3.9433e-02  eta: 1:08:15  time: 0.2355  data_time: 0.0216  memory: 13154  grad_norm: 324.8059  loss: 648.8759  loss_cls: 222.3443  loss_bbox: 271.2605  loss_dfl: 155.2712
+2024/07/24 11:06:18 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:06:18 - mmengine - INFO - Saving checkpoint at 10 epochs
+2024/07/24 11:06:18 - mmengine - WARNING - `save_param_scheduler` is True but `self.param_schedulers` is None, so skip saving parameter schedulers
+2024/07/24 11:06:46 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:07:12 - mmengine - INFO - bbox_mAP_copypaste: 0.059 0.121 0.055 0.025 0.098 0.146
+2024/07/24 11:07:12 - mmengine - INFO - Epoch(val) [10][5/5]    coco/bbox_mAP: 0.0590  coco/bbox_mAP_50: 0.1210  coco/bbox_mAP_75: 0.0550  coco/bbox_mAP_s: 0.0250  coco/bbox_mAP_m: 0.0980  coco/bbox_mAP_l: 0.1460  data_time: 0.1182  time: 5.0460
+2024/07/24 11:07:13 - mmengine - INFO - The best checkpoint with 0.0590 coco/bbox_mAP at 10 epoch is saved to best_coco_bbox_mAP_epoch_10.pth.
+2024/07/24 11:07:26 - mmengine - INFO - Epoch(train)  [11][50/51]  base_lr: 8.0000e-02 lr: 4.3244e-02  eta: 1:07:13  time: 0.2436  data_time: 0.0228  memory: 22363  grad_norm: 285.6198  loss: 619.4391  loss_cls: 211.4115  loss_bbox: 257.1742  loss_dfl: 150.8534
+2024/07/24 11:07:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:07:38 - mmengine - INFO - Epoch(train)  [12][50/51]  base_lr: 8.0000e-02 lr: 4.7029e-02  eta: 1:06:16  time: 0.2408  data_time: 0.0201  memory: 12528  grad_norm: 253.4040  loss: 597.9559  loss_cls: 200.3095  loss_bbox: 248.5953  loss_dfl: 149.0512
+2024/07/24 11:07:38 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:07:50 - mmengine - INFO - Epoch(train)  [13][50/51]  base_lr: 8.0000e-02 lr: 5.0786e-02  eta: 1:05:25  time: 0.2391  data_time: 0.0191  memory: 13088  grad_norm: 231.4968  loss: 588.0601  loss_cls: 196.1749  loss_bbox: 245.5546  loss_dfl: 146.3306
+2024/07/24 11:07:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:08:02 - mmengine - INFO - Epoch(train)  [14][50/51]  base_lr: 8.0000e-02 lr: 5.4516e-02  eta: 1:04:40  time: 0.2396  data_time: 0.0173  memory: 15235  grad_norm: 207.8925  loss: 569.3351  loss_cls: 188.5021  loss_bbox: 238.1581  loss_dfl: 142.6749
+2024/07/24 11:08:03 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:08:14 - mmengine - INFO - Epoch(train)  [15][50/51]  base_lr: 8.0000e-02 lr: 5.8220e-02  eta: 1:03:56  time: 0.2373  data_time: 0.0208  memory: 13941  grad_norm: 185.4579  loss: 556.0570  loss_cls: 182.1685  loss_bbox: 231.8702  loss_dfl: 142.0183
+2024/07/24 11:08:15 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:08:26 - mmengine - INFO - Epoch(train)  [16][50/51]  base_lr: 8.0000e-02 lr: 6.1897e-02  eta: 1:03:14  time: 0.2337  data_time: 0.0174  memory: 14155  grad_norm: 170.5200  loss: 549.6371  loss_cls: 178.9068  loss_bbox: 229.7715  loss_dfl: 140.9588
+2024/07/24 11:08:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:08:38 - mmengine - INFO - Epoch(train)  [17][50/51]  base_lr: 8.0000e-02 lr: 6.5546e-02  eta: 1:02:33  time: 0.2320  data_time: 0.0195  memory: 12541  grad_norm: 154.0974  loss: 542.5203  loss_cls: 176.9437  loss_bbox: 226.2369  loss_dfl: 139.3396
+2024/07/24 11:08:38 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:08:50 - mmengine - INFO - Epoch(train)  [18][50/51]  base_lr: 8.0000e-02 lr: 6.9169e-02  eta: 1:01:58  time: 0.2349  data_time: 0.0188  memory: 12195  grad_norm: 139.7766  loss: 526.7604  loss_cls: 168.7529  loss_bbox: 219.7375  loss_dfl: 138.2700
+2024/07/24 11:08:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:09:02 - mmengine - INFO - Epoch(train)  [19][50/51]  base_lr: 8.0000e-02 lr: 7.2765e-02  eta: 1:01:28  time: 0.2379  data_time: 0.0176  memory: 12635  grad_norm: 126.9467  loss: 524.7795  loss_cls: 168.4315  loss_bbox: 219.5510  loss_dfl: 136.7970
+2024/07/24 11:09:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:09:10 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:09:14 - mmengine - INFO - Epoch(train)  [20][50/51]  base_lr: 8.0000e-02 lr: 7.4984e-02  eta: 1:00:58  time: 0.2352  data_time: 0.0270  memory: 14101  grad_norm: 118.8863  loss: 515.8579  loss_cls: 164.6919  loss_bbox: 215.6962  loss_dfl: 135.4697
+2024/07/24 11:09:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:09:14 - mmengine - INFO - Saving checkpoint at 20 epochs
+2024/07/24 11:09:17 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:09:44 - mmengine - INFO - bbox_mAP_copypaste: 0.082 0.158 0.077 0.042 0.141 0.140
+2024/07/24 11:09:44 - mmengine - INFO - Epoch(val) [20][5/5]    coco/bbox_mAP: 0.0820  coco/bbox_mAP_50: 0.1580  coco/bbox_mAP_75: 0.0770  coco/bbox_mAP_s: 0.0420  coco/bbox_mAP_m: 0.1410  coco/bbox_mAP_l: 0.1400  data_time: 0.0435  time: 0.5800
+2024/07/24 11:09:44 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_10.pth is removed
+2024/07/24 11:09:44 - mmengine - INFO - The best checkpoint with 0.0820 coco/bbox_mAP at 20 epoch is saved to best_coco_bbox_mAP_epoch_20.pth.
+2024/07/24 11:09:57 - mmengine - INFO - Epoch(train)  [21][50/51]  base_lr: 8.0000e-02 lr: 7.4984e-02  eta: 1:00:29  time: 0.2354  data_time: 0.0188  memory: 17835  grad_norm: 105.5065  loss: 507.5620  loss_cls: 161.4604  loss_bbox: 214.2511  loss_dfl: 131.8505
+2024/07/24 11:09:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:10:09 - mmengine - INFO - Epoch(train)  [22][50/51]  base_lr: 8.0000e-02 lr: 7.4720e-02  eta: 1:00:05  time: 0.2391  data_time: 0.0239  memory: 13008  grad_norm: 97.5432  loss: 503.2452  loss_cls: 159.2567  loss_bbox: 211.2932  loss_dfl: 132.6953
+2024/07/24 11:10:10 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:10:21 - mmengine - INFO - Epoch(train)  [23][50/51]  base_lr: 8.0000e-02 lr: 7.4456e-02  eta: 0:59:40  time: 0.2365  data_time: 0.0205  memory: 13781  grad_norm: 95.1757  loss: 504.6900  loss_cls: 159.3362  loss_bbox: 213.2068  loss_dfl: 132.1470
+2024/07/24 11:10:21 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:10:33 - mmengine - INFO - Epoch(train)  [24][50/51]  base_lr: 8.0000e-02 lr: 7.4192e-02  eta: 0:59:13  time: 0.2310  data_time: 0.0165  memory: 12928  grad_norm: 89.5284  loss: 490.6152  loss_cls: 154.5340  loss_bbox: 205.9637  loss_dfl: 130.1174
+2024/07/24 11:10:33 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:10:45 - mmengine - INFO - Epoch(train)  [25][50/51]  base_lr: 8.0000e-02 lr: 7.3928e-02  eta: 0:58:47  time: 0.2321  data_time: 0.0171  memory: 15888  grad_norm: 87.3320  loss: 480.3751  loss_cls: 150.6824  loss_bbox: 200.6984  loss_dfl: 128.9943
+2024/07/24 11:10:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:10:57 - mmengine - INFO - Epoch(train)  [26][50/51]  base_lr: 8.0000e-02 lr: 7.3664e-02  eta: 0:58:29  time: 0.2433  data_time: 0.0180  memory: 12515  grad_norm: 85.6443  loss: 475.2902  loss_cls: 147.8324  loss_bbox: 198.6154  loss_dfl: 128.8424
+2024/07/24 11:10:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:11:09 - mmengine - INFO - Epoch(train)  [27][50/51]  base_lr: 8.0000e-02 lr: 7.3400e-02  eta: 0:58:08  time: 0.2382  data_time: 0.0197  memory: 12088  grad_norm: 82.4862  loss: 476.1581  loss_cls: 148.6767  loss_bbox: 199.0137  loss_dfl: 128.4677
+2024/07/24 11:11:09 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:11:21 - mmengine - INFO - Epoch(train)  [28][50/51]  base_lr: 8.0000e-02 lr: 7.3136e-02  eta: 0:57:44  time: 0.2295  data_time: 0.0177  memory: 13515  grad_norm: 81.9249  loss: 471.6190  loss_cls: 147.1607  loss_bbox: 197.0690  loss_dfl: 127.3893
+2024/07/24 11:11:21 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:11:33 - mmengine - INFO - Epoch(train)  [29][50/51]  base_lr: 8.0000e-02 lr: 7.2872e-02  eta: 0:57:26  time: 0.2405  data_time: 0.0184  memory: 12688  grad_norm: 80.5689  loss: 475.2273  loss_cls: 146.6616  loss_bbox: 200.5239  loss_dfl: 128.0418
+2024/07/24 11:11:33 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:11:45 - mmengine - INFO - Epoch(train)  [30][50/51]  base_lr: 8.0000e-02 lr: 7.2608e-02  eta: 0:57:08  time: 0.2403  data_time: 0.0168  memory: 14155  grad_norm: 80.2487  loss: 469.1499  loss_cls: 145.3307  loss_bbox: 196.3553  loss_dfl: 127.4638
+2024/07/24 11:11:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:11:45 - mmengine - INFO - Saving checkpoint at 30 epochs
+2024/07/24 11:11:49 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:12:14 - mmengine - INFO - bbox_mAP_copypaste: 0.161 0.287 0.161 0.083 0.247 0.332
+2024/07/24 11:12:14 - mmengine - INFO - Epoch(val) [30][5/5]    coco/bbox_mAP: 0.1610  coco/bbox_mAP_50: 0.2870  coco/bbox_mAP_75: 0.1610  coco/bbox_mAP_s: 0.0830  coco/bbox_mAP_m: 0.2470  coco/bbox_mAP_l: 0.3320  data_time: 0.0619  time: 0.1193
+2024/07/24 11:12:14 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_20.pth is removed
+2024/07/24 11:12:15 - mmengine - INFO - The best checkpoint with 0.1610 coco/bbox_mAP at 30 epoch is saved to best_coco_bbox_mAP_epoch_30.pth.
+2024/07/24 11:12:28 - mmengine - INFO - Epoch(train)  [31][50/51]  base_lr: 8.0000e-02 lr: 7.2344e-02  eta: 0:56:54  time: 0.2490  data_time: 0.0198  memory: 12101  grad_norm: 78.7176  loss: 466.7722  loss_cls: 145.3429  loss_bbox: 194.9313  loss_dfl: 126.4979
+2024/07/24 11:12:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:12:41 - mmengine - INFO - Epoch(train)  [32][50/51]  base_lr: 8.0000e-02 lr: 7.2080e-02  eta: 0:56:41  time: 0.2487  data_time: 0.0171  memory: 12808  grad_norm: 77.5910  loss: 459.1014  loss_cls: 139.7248  loss_bbox: 192.2320  loss_dfl: 127.1446
+2024/07/24 11:12:41 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:12:53 - mmengine - INFO - Epoch(train)  [33][50/51]  base_lr: 8.0000e-02 lr: 7.1816e-02  eta: 0:56:20  time: 0.2300  data_time: 0.0176  memory: 12355  grad_norm: 77.1053  loss: 451.9406  loss_cls: 137.6762  loss_bbox: 188.8000  loss_dfl: 125.4644
+2024/07/24 11:12:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:13:05 - mmengine - INFO - Epoch(train)  [34][50/51]  base_lr: 8.0000e-02 lr: 7.1552e-02  eta: 0:56:01  time: 0.2363  data_time: 0.0180  memory: 12981  grad_norm: 76.1295  loss: 460.8463  loss_cls: 141.2609  loss_bbox: 193.5119  loss_dfl: 126.0734
+2024/07/24 11:13:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:13:16 - mmengine - INFO - Epoch(train)  [35][50/51]  base_lr: 8.0000e-02 lr: 7.1288e-02  eta: 0:55:42  time: 0.2331  data_time: 0.0180  memory: 16874  grad_norm: 75.9036  loss: 454.9575  loss_cls: 139.4974  loss_bbox: 190.7007  loss_dfl: 124.7594
+2024/07/24 11:13:17 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:13:28 - mmengine - INFO - Epoch(train)  [36][50/51]  base_lr: 8.0000e-02 lr: 7.1024e-02  eta: 0:55:24  time: 0.2330  data_time: 0.0181  memory: 11341  grad_norm: 76.7140  loss: 453.4955  loss_cls: 139.1820  loss_bbox: 190.0519  loss_dfl: 124.2616
+2024/07/24 11:13:28 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:13:40 - mmengine - INFO - Epoch(train)  [37][50/51]  base_lr: 8.0000e-02 lr: 7.0760e-02  eta: 0:55:07  time: 0.2371  data_time: 0.0160  memory: 12328  grad_norm: 74.7849  loss: 447.1660  loss_cls: 135.2802  loss_bbox: 186.8469  loss_dfl: 125.0389
+2024/07/24 11:13:40 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:13:52 - mmengine - INFO - Epoch(train)  [38][50/51]  base_lr: 8.0000e-02 lr: 7.0496e-02  eta: 0:54:48  time: 0.2300  data_time: 0.0176  memory: 12635  grad_norm: 73.7643  loss: 449.4738  loss_cls: 135.9810  loss_bbox: 188.8436  loss_dfl: 124.6493
+2024/07/24 11:13:52 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:14:04 - mmengine - INFO - Epoch(train)  [39][50/51]  base_lr: 8.0000e-02 lr: 7.0232e-02  eta: 0:54:31  time: 0.2352  data_time: 0.0168  memory: 13821  grad_norm: 75.3674  loss: 450.0629  loss_cls: 136.4827  loss_bbox: 188.8387  loss_dfl: 124.7414
+2024/07/24 11:14:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:14:08 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:14:16 - mmengine - INFO - Epoch(train)  [40][50/51]  base_lr: 8.0000e-02 lr: 6.9968e-02  eta: 0:54:13  time: 0.2334  data_time: 0.0218  memory: 13235  grad_norm: 74.0076  loss: 440.4104  loss_cls: 132.8306  loss_bbox: 184.0190  loss_dfl: 123.5609
+2024/07/24 11:14:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:14:16 - mmengine - INFO - Saving checkpoint at 40 epochs
+2024/07/24 11:14:19 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:14:45 - mmengine - INFO - bbox_mAP_copypaste: 0.176 0.307 0.176 0.094 0.274 0.349
+2024/07/24 11:14:45 - mmengine - INFO - Epoch(val) [40][5/5]    coco/bbox_mAP: 0.1760  coco/bbox_mAP_50: 0.3070  coco/bbox_mAP_75: 0.1760  coco/bbox_mAP_s: 0.0940  coco/bbox_mAP_m: 0.2740  coco/bbox_mAP_l: 0.3490  data_time: 0.0495  time: 0.1067
+2024/07/24 11:14:45 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_30.pth is removed
+2024/07/24 11:14:45 - mmengine - INFO - The best checkpoint with 0.1760 coco/bbox_mAP at 40 epoch is saved to best_coco_bbox_mAP_epoch_40.pth.
+2024/07/24 11:14:58 - mmengine - INFO - Epoch(train)  [41][50/51]  base_lr: 8.0000e-02 lr: 6.9704e-02  eta: 0:53:55  time: 0.2283  data_time: 0.0206  memory: 12355  grad_norm: 74.4809  loss: 446.3891  loss_cls: 135.3405  loss_bbox: 186.4763  loss_dfl: 124.5722
+2024/07/24 11:14:58 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:15:10 - mmengine - INFO - Epoch(train)  [42][50/51]  base_lr: 8.0000e-02 lr: 6.9440e-02  eta: 0:53:38  time: 0.2326  data_time: 0.0190  memory: 11808  grad_norm: 74.3433  loss: 443.7067  loss_cls: 133.4140  loss_bbox: 186.3472  loss_dfl: 123.9455
+2024/07/24 11:15:10 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:15:22 - mmengine - INFO - Epoch(train)  [43][50/51]  base_lr: 8.0000e-02 lr: 6.9176e-02  eta: 0:53:23  time: 0.2370  data_time: 0.0166  memory: 11995  grad_norm: 73.4931  loss: 440.8263  loss_cls: 132.4769  loss_bbox: 184.9199  loss_dfl: 123.4295
+2024/07/24 11:15:22 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:15:33 - mmengine - INFO - Epoch(train)  [44][50/51]  base_lr: 8.0000e-02 lr: 6.8912e-02  eta: 0:53:06  time: 0.2323  data_time: 0.0189  memory: 11808  grad_norm: 73.4472  loss: 441.4782  loss_cls: 131.5559  loss_bbox: 186.8045  loss_dfl: 123.1178
+2024/07/24 11:15:33 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:15:45 - mmengine - INFO - Epoch(train)  [45][50/51]  base_lr: 8.0000e-02 lr: 6.8648e-02  eta: 0:52:49  time: 0.2298  data_time: 0.0193  memory: 12621  grad_norm: 72.6545  loss: 437.3967  loss_cls: 130.6419  loss_bbox: 183.9783  loss_dfl: 122.7765
+2024/07/24 11:15:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:15:57 - mmengine - INFO - Epoch(train)  [46][50/51]  base_lr: 8.0000e-02 lr: 6.8384e-02  eta: 0:52:35  time: 0.2395  data_time: 0.0184  memory: 16021  grad_norm: 73.4227  loss: 438.4233  loss_cls: 130.9729  loss_bbox: 184.4583  loss_dfl: 122.9921
+2024/07/24 11:15:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:16:09 - mmengine - INFO - Epoch(train)  [47][50/51]  base_lr: 8.0000e-02 lr: 6.8120e-02  eta: 0:52:18  time: 0.2315  data_time: 0.0191  memory: 12128  grad_norm: 72.4844  loss: 436.3026  loss_cls: 131.0504  loss_bbox: 182.7287  loss_dfl: 122.5235
+2024/07/24 11:16:09 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:16:21 - mmengine - INFO - Epoch(train)  [48][50/51]  base_lr: 8.0000e-02 lr: 6.7856e-02  eta: 0:52:03  time: 0.2349  data_time: 0.0172  memory: 12755  grad_norm: 72.8250  loss: 436.4330  loss_cls: 129.8274  loss_bbox: 184.6137  loss_dfl: 121.9919
+2024/07/24 11:16:21 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:16:33 - mmengine - INFO - Epoch(train)  [49][50/51]  base_lr: 8.0000e-02 lr: 6.7592e-02  eta: 0:51:49  time: 0.2383  data_time: 0.0181  memory: 12075  grad_norm: 71.9937  loss: 434.6877  loss_cls: 129.4213  loss_bbox: 182.2752  loss_dfl: 122.9912
+2024/07/24 11:16:33 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:16:45 - mmengine - INFO - Epoch(train)  [50][50/51]  base_lr: 8.0000e-02 lr: 6.7328e-02  eta: 0:51:34  time: 0.2355  data_time: 0.0190  memory: 11448  grad_norm: 72.8133  loss: 437.2624  loss_cls: 131.3167  loss_bbox: 183.4738  loss_dfl: 122.4719
+2024/07/24 11:16:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:16:45 - mmengine - INFO - Saving checkpoint at 50 epochs
+2024/07/24 11:16:49 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:17:13 - mmengine - INFO - bbox_mAP_copypaste: 0.191 0.330 0.190 0.104 0.297 0.358
+2024/07/24 11:17:13 - mmengine - INFO - Epoch(val) [50][5/5]    coco/bbox_mAP: 0.1910  coco/bbox_mAP_50: 0.3300  coco/bbox_mAP_75: 0.1900  coco/bbox_mAP_s: 0.1040  coco/bbox_mAP_m: 0.2970  coco/bbox_mAP_l: 0.3580  data_time: 0.0480  time: 0.1048
+2024/07/24 11:17:13 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_40.pth is removed
+2024/07/24 11:17:14 - mmengine - INFO - The best checkpoint with 0.1910 coco/bbox_mAP at 50 epoch is saved to best_coco_bbox_mAP_epoch_50.pth.
+2024/07/24 11:17:27 - mmengine - INFO - Epoch(train)  [51][50/51]  base_lr: 8.0000e-02 lr: 6.7064e-02  eta: 0:51:18  time: 0.2297  data_time: 0.0217  memory: 17034  grad_norm: 72.0594  loss: 431.8479  loss_cls: 128.3869  loss_bbox: 181.1891  loss_dfl: 122.2719
+2024/07/24 11:17:27 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:17:39 - mmengine - INFO - Epoch(train)  [52][50/51]  base_lr: 8.0000e-02 lr: 6.6800e-02  eta: 0:51:02  time: 0.2303  data_time: 0.0175  memory: 12795  grad_norm: 72.1247  loss: 426.6229  loss_cls: 126.6994  loss_bbox: 178.2774  loss_dfl: 121.6461
+2024/07/24 11:17:39 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:17:50 - mmengine - INFO - Epoch(train)  [53][50/51]  base_lr: 8.0000e-02 lr: 6.6536e-02  eta: 0:50:48  time: 0.2338  data_time: 0.0209  memory: 12421  grad_norm: 71.8578  loss: 432.6322  loss_cls: 128.6337  loss_bbox: 181.5224  loss_dfl: 122.4762
+2024/07/24 11:17:51 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:18:02 - mmengine - INFO - Epoch(train)  [54][50/51]  base_lr: 8.0000e-02 lr: 6.6272e-02  eta: 0:50:33  time: 0.2349  data_time: 0.0212  memory: 12901  grad_norm: 72.5350  loss: 432.9909  loss_cls: 128.2962  loss_bbox: 182.0039  loss_dfl: 122.6907
+2024/07/24 11:18:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:18:14 - mmengine - INFO - Epoch(train)  [55][50/51]  base_lr: 8.0000e-02 lr: 6.6008e-02  eta: 0:50:19  time: 0.2332  data_time: 0.0231  memory: 12355  grad_norm: 71.7798  loss: 428.2146  loss_cls: 126.7598  loss_bbox: 179.6264  loss_dfl: 121.8283
+2024/07/24 11:18:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:18:26 - mmengine - INFO - Epoch(train)  [56][50/51]  base_lr: 8.0000e-02 lr: 6.5744e-02  eta: 0:50:05  time: 0.2373  data_time: 0.0211  memory: 14221  grad_norm: 72.0634  loss: 430.8182  loss_cls: 127.2523  loss_bbox: 182.0217  loss_dfl: 121.5442
+2024/07/24 11:18:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:18:38 - mmengine - INFO - Epoch(train)  [57][50/51]  base_lr: 8.0000e-02 lr: 6.5480e-02  eta: 0:49:50  time: 0.2333  data_time: 0.0176  memory: 13608  grad_norm: 71.1559  loss: 427.0012  loss_cls: 125.6994  loss_bbox: 179.2273  loss_dfl: 122.0746
+2024/07/24 11:18:38 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:18:50 - mmengine - INFO - Epoch(train)  [58][50/51]  base_lr: 8.0000e-02 lr: 6.5216e-02  eta: 0:49:37  time: 0.2380  data_time: 0.0168  memory: 13928  grad_norm: 72.2586  loss: 426.9566  loss_cls: 125.5200  loss_bbox: 179.3258  loss_dfl: 122.1108
+2024/07/24 11:18:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:19:00 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:19:02 - mmengine - INFO - Epoch(train)  [59][50/51]  base_lr: 8.0000e-02 lr: 6.4952e-02  eta: 0:49:23  time: 0.2354  data_time: 0.0189  memory: 12128  grad_norm: 70.9962  loss: 428.0185  loss_cls: 126.5003  loss_bbox: 179.8198  loss_dfl: 121.6984
+2024/07/24 11:19:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:19:14 - mmengine - INFO - Epoch(train)  [60][50/51]  base_lr: 8.0000e-02 lr: 6.4688e-02  eta: 0:49:09  time: 0.2323  data_time: 0.0181  memory: 12115  grad_norm: 71.0454  loss: 424.5083  loss_cls: 125.0806  loss_bbox: 177.7365  loss_dfl: 121.6911
+2024/07/24 11:19:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:19:14 - mmengine - INFO - Saving checkpoint at 60 epochs
+2024/07/24 11:19:17 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:19:42 - mmengine - INFO - bbox_mAP_copypaste: 0.199 0.344 0.195 0.109 0.305 0.390
+2024/07/24 11:19:43 - mmengine - INFO - Epoch(val) [60][5/5]    coco/bbox_mAP: 0.1990  coco/bbox_mAP_50: 0.3440  coco/bbox_mAP_75: 0.1950  coco/bbox_mAP_s: 0.1090  coco/bbox_mAP_m: 0.3050  coco/bbox_mAP_l: 0.3900  data_time: 0.0372  time: 0.0958
+2024/07/24 11:19:43 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_50.pth is removed
+2024/07/24 11:19:44 - mmengine - INFO - The best checkpoint with 0.1990 coco/bbox_mAP at 60 epoch is saved to best_coco_bbox_mAP_epoch_60.pth.
+2024/07/24 11:19:56 - mmengine - INFO - Epoch(train)  [61][50/51]  base_lr: 8.0000e-02 lr: 6.4424e-02  eta: 0:48:55  time: 0.2343  data_time: 0.0215  memory: 11848  grad_norm: 70.4926  loss: 425.0825  loss_cls: 125.4188  loss_bbox: 179.0962  loss_dfl: 120.5676
+2024/07/24 11:19:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:20:08 - mmengine - INFO - Epoch(train)  [62][50/51]  base_lr: 8.0000e-02 lr: 6.4160e-02  eta: 0:48:41  time: 0.2361  data_time: 0.0186  memory: 13315  grad_norm: 72.5966  loss: 423.9582  loss_cls: 124.4650  loss_bbox: 179.2434  loss_dfl: 120.2499
+2024/07/24 11:20:08 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:20:20 - mmengine - INFO - Epoch(train)  [63][50/51]  base_lr: 8.0000e-02 lr: 6.3896e-02  eta: 0:48:27  time: 0.2318  data_time: 0.0168  memory: 11928  grad_norm: 71.0346  loss: 422.8961  loss_cls: 124.2965  loss_bbox: 177.5879  loss_dfl: 121.0117
+2024/07/24 11:20:20 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:20:32 - mmengine - INFO - Epoch(train)  [64][50/51]  base_lr: 8.0000e-02 lr: 6.3632e-02  eta: 0:48:12  time: 0.2324  data_time: 0.0174  memory: 12208  grad_norm: 71.1428  loss: 425.9219  loss_cls: 125.8713  loss_bbox: 179.3473  loss_dfl: 120.7033
+2024/07/24 11:20:32 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:20:44 - mmengine - INFO - Epoch(train)  [65][50/51]  base_lr: 8.0000e-02 lr: 6.3368e-02  eta: 0:47:59  time: 0.2348  data_time: 0.0171  memory: 13328  grad_norm: 71.1818  loss: 421.5312  loss_cls: 123.4879  loss_bbox: 176.7956  loss_dfl: 121.2476
+2024/07/24 11:20:44 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:20:55 - mmengine - INFO - Epoch(train)  [66][50/51]  base_lr: 8.0000e-02 lr: 6.3104e-02  eta: 0:47:44  time: 0.2283  data_time: 0.0175  memory: 12648  grad_norm: 70.8941  loss: 420.5217  loss_cls: 123.2284  loss_bbox: 175.9698  loss_dfl: 121.3235
+2024/07/24 11:20:55 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:21:07 - mmengine - INFO - Epoch(train)  [67][50/51]  base_lr: 8.0000e-02 lr: 6.2840e-02  eta: 0:47:31  time: 0.2345  data_time: 0.0205  memory: 14155  grad_norm: 70.5052  loss: 422.5381  loss_cls: 123.6725  loss_bbox: 178.1972  loss_dfl: 120.6684
+2024/07/24 11:21:07 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:21:19 - mmengine - INFO - Epoch(train)  [68][50/51]  base_lr: 8.0000e-02 lr: 6.2576e-02  eta: 0:47:16  time: 0.2314  data_time: 0.0183  memory: 11781  grad_norm: 70.9336  loss: 421.3506  loss_cls: 123.4651  loss_bbox: 176.9736  loss_dfl: 120.9119
+2024/07/24 11:21:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:21:31 - mmengine - INFO - Epoch(train)  [69][50/51]  base_lr: 8.0000e-02 lr: 6.2312e-02  eta: 0:47:03  time: 0.2340  data_time: 0.0214  memory: 14008  grad_norm: 70.0136  loss: 423.0061  loss_cls: 123.9747  loss_bbox: 178.4215  loss_dfl: 120.6099
+2024/07/24 11:21:31 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:21:42 - mmengine - INFO - Epoch(train)  [70][50/51]  base_lr: 8.0000e-02 lr: 6.2048e-02  eta: 0:46:49  time: 0.2329  data_time: 0.0193  memory: 13181  grad_norm: 72.2198  loss: 417.1863  loss_cls: 121.2865  loss_bbox: 176.1233  loss_dfl: 119.7764
+2024/07/24 11:21:43 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:21:43 - mmengine - INFO - Saving checkpoint at 70 epochs
+2024/07/24 11:21:46 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:22:11 - mmengine - INFO - bbox_mAP_copypaste: 0.201 0.346 0.201 0.113 0.305 0.370
+2024/07/24 11:22:11 - mmengine - INFO - Epoch(val) [70][5/5]    coco/bbox_mAP: 0.2010  coco/bbox_mAP_50: 0.3460  coco/bbox_mAP_75: 0.2010  coco/bbox_mAP_s: 0.1130  coco/bbox_mAP_m: 0.3050  coco/bbox_mAP_l: 0.3700  data_time: 0.0510  time: 0.1085
+2024/07/24 11:22:11 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_60.pth is removed
+2024/07/24 11:22:12 - mmengine - INFO - The best checkpoint with 0.2010 coco/bbox_mAP at 70 epoch is saved to best_coco_bbox_mAP_epoch_70.pth.
+2024/07/24 11:22:24 - mmengine - INFO - Epoch(train)  [71][50/51]  base_lr: 8.0000e-02 lr: 6.1784e-02  eta: 0:46:36  time: 0.2331  data_time: 0.0173  memory: 11928  grad_norm: 70.2813  loss: 421.2538  loss_cls: 123.6214  loss_bbox: 177.7994  loss_dfl: 119.8330
+2024/07/24 11:22:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:22:37 - mmengine - INFO - Epoch(train)  [72][50/51]  base_lr: 8.0000e-02 lr: 6.1520e-02  eta: 0:46:24  time: 0.2443  data_time: 0.0196  memory: 14301  grad_norm: 71.1736  loss: 415.3767  loss_cls: 121.1063  loss_bbox: 174.7893  loss_dfl: 119.4812
+2024/07/24 11:22:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:22:49 - mmengine - INFO - Epoch(train)  [73][50/51]  base_lr: 8.0000e-02 lr: 6.1256e-02  eta: 0:46:11  time: 0.2368  data_time: 0.0197  memory: 14221  grad_norm: 71.0345  loss: 415.7395  loss_cls: 121.1306  loss_bbox: 174.3166  loss_dfl: 120.2923
+2024/07/24 11:22:49 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:23:01 - mmengine - INFO - Epoch(train)  [74][50/51]  base_lr: 8.0000e-02 lr: 6.0992e-02  eta: 0:45:58  time: 0.2347  data_time: 0.0170  memory: 12795  grad_norm: 71.4738  loss: 415.0887  loss_cls: 120.7465  loss_bbox: 173.8666  loss_dfl: 120.4757
+2024/07/24 11:23:01 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:23:13 - mmengine - INFO - Epoch(train)  [75][50/51]  base_lr: 8.0000e-02 lr: 6.0728e-02  eta: 0:45:45  time: 0.2382  data_time: 0.0199  memory: 13915  grad_norm: 70.3972  loss: 417.3540  loss_cls: 120.8852  loss_bbox: 176.1327  loss_dfl: 120.3362
+2024/07/24 11:23:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:23:24 - mmengine - INFO - Epoch(train)  [76][50/51]  base_lr: 8.0000e-02 lr: 6.0464e-02  eta: 0:45:32  time: 0.2320  data_time: 0.0187  memory: 13275  grad_norm: 70.1075  loss: 419.6465  loss_cls: 122.6074  loss_bbox: 176.3475  loss_dfl: 120.6916
+2024/07/24 11:23:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:23:36 - mmengine - INFO - Epoch(train)  [77][50/51]  base_lr: 8.0000e-02 lr: 6.0200e-02  eta: 0:45:18  time: 0.2347  data_time: 0.0218  memory: 12235  grad_norm: 69.4123  loss: 417.8043  loss_cls: 122.5194  loss_bbox: 174.7631  loss_dfl: 120.5218
+2024/07/24 11:23:36 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:23:48 - mmengine - INFO - Epoch(train)  [78][50/51]  base_lr: 8.0000e-02 lr: 5.9936e-02  eta: 0:45:05  time: 0.2326  data_time: 0.0177  memory: 12488  grad_norm: 70.4778  loss: 412.6934  loss_cls: 119.0695  loss_bbox: 174.1834  loss_dfl: 119.4405
+2024/07/24 11:23:48 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:23:54 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:24:00 - mmengine - INFO - Epoch(train)  [79][50/51]  base_lr: 8.0000e-02 lr: 5.9672e-02  eta: 0:44:52  time: 0.2375  data_time: 0.0191  memory: 12488  grad_norm: 71.9006  loss: 417.0915  loss_cls: 121.1321  loss_bbox: 175.6590  loss_dfl: 120.3004
+2024/07/24 11:24:00 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:24:12 - mmengine - INFO - Epoch(train)  [80][50/51]  base_lr: 8.0000e-02 lr: 5.9408e-02  eta: 0:44:39  time: 0.2334  data_time: 0.0185  memory: 11995  grad_norm: 70.9681  loss: 416.5163  loss_cls: 120.0977  loss_bbox: 175.5558  loss_dfl: 120.8629
+2024/07/24 11:24:12 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:24:12 - mmengine - INFO - Saving checkpoint at 80 epochs
+2024/07/24 11:24:15 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:24:40 - mmengine - INFO - bbox_mAP_copypaste: 0.212 0.360 0.214 0.119 0.325 0.393
+2024/07/24 11:24:40 - mmengine - INFO - Epoch(val) [80][5/5]    coco/bbox_mAP: 0.2120  coco/bbox_mAP_50: 0.3600  coco/bbox_mAP_75: 0.2140  coco/bbox_mAP_s: 0.1190  coco/bbox_mAP_m: 0.3250  coco/bbox_mAP_l: 0.3930  data_time: 0.0462  time: 0.1020
+2024/07/24 11:24:40 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_70.pth is removed
+2024/07/24 11:24:41 - mmengine - INFO - The best checkpoint with 0.2120 coco/bbox_mAP at 80 epoch is saved to best_coco_bbox_mAP_epoch_80.pth.
+2024/07/24 11:24:54 - mmengine - INFO - Epoch(train)  [81][50/51]  base_lr: 8.0000e-02 lr: 5.9144e-02  eta: 0:44:26  time: 0.2380  data_time: 0.0226  memory: 13035  grad_norm: 70.4741  loss: 408.1564  loss_cls: 118.0537  loss_bbox: 170.7730  loss_dfl: 119.3297
+2024/07/24 11:24:54 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:25:06 - mmengine - INFO - Epoch(train)  [82][50/51]  base_lr: 8.0000e-02 lr: 5.8880e-02  eta: 0:44:13  time: 0.2312  data_time: 0.0186  memory: 11208  grad_norm: 70.6600  loss: 412.2225  loss_cls: 119.0139  loss_bbox: 173.5721  loss_dfl: 119.6365
+2024/07/24 11:25:06 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:25:17 - mmengine - INFO - Epoch(train)  [83][50/51]  base_lr: 8.0000e-02 lr: 5.8616e-02  eta: 0:44:00  time: 0.2316  data_time: 0.0164  memory: 13581  grad_norm: 70.0363  loss: 412.8059  loss_cls: 118.9077  loss_bbox: 174.5061  loss_dfl: 119.3921
+2024/07/24 11:25:17 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:25:29 - mmengine - INFO - Epoch(train)  [84][50/51]  base_lr: 8.0000e-02 lr: 5.8352e-02  eta: 0:43:47  time: 0.2343  data_time: 0.0210  memory: 12101  grad_norm: 71.9331  loss: 412.9265  loss_cls: 119.5309  loss_bbox: 173.4976  loss_dfl: 119.8979
+2024/07/24 11:25:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:25:41 - mmengine - INFO - Epoch(train)  [85][50/51]  base_lr: 8.0000e-02 lr: 5.8088e-02  eta: 0:43:34  time: 0.2385  data_time: 0.0186  memory: 12861  grad_norm: 70.2643  loss: 413.4699  loss_cls: 119.6585  loss_bbox: 174.4122  loss_dfl: 119.3993
+2024/07/24 11:25:41 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:25:53 - mmengine - INFO - Epoch(train)  [86][50/51]  base_lr: 8.0000e-02 lr: 5.7824e-02  eta: 0:43:21  time: 0.2333  data_time: 0.0177  memory: 13661  grad_norm: 70.6850  loss: 406.9402  loss_cls: 117.5496  loss_bbox: 169.8416  loss_dfl: 119.5489
+2024/07/24 11:25:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:26:05 - mmengine - INFO - Epoch(train)  [87][50/51]  base_lr: 8.0000e-02 lr: 5.7560e-02  eta: 0:43:08  time: 0.2357  data_time: 0.0202  memory: 12408  grad_norm: 70.4457  loss: 413.4618  loss_cls: 119.9195  loss_bbox: 174.0424  loss_dfl: 119.4999
+2024/07/24 11:26:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:26:17 - mmengine - INFO - Epoch(train)  [88][50/51]  base_lr: 8.0000e-02 lr: 5.7296e-02  eta: 0:42:56  time: 0.2341  data_time: 0.0169  memory: 12381  grad_norm: 70.9473  loss: 411.9082  loss_cls: 119.0537  loss_bbox: 173.6990  loss_dfl: 119.1555
+2024/07/24 11:26:17 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:26:29 - mmengine - INFO - Epoch(train)  [89][50/51]  base_lr: 8.0000e-02 lr: 5.7032e-02  eta: 0:42:43  time: 0.2365  data_time: 0.0178  memory: 11728  grad_norm: 70.0975  loss: 407.0240  loss_cls: 117.5225  loss_bbox: 170.7618  loss_dfl: 118.7397
+2024/07/24 11:26:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:26:41 - mmengine - INFO - Epoch(train)  [90][50/51]  base_lr: 8.0000e-02 lr: 5.6768e-02  eta: 0:42:32  time: 0.2508  data_time: 0.0178  memory: 13768  grad_norm: 70.2405  loss: 411.7010  loss_cls: 119.1207  loss_bbox: 173.5977  loss_dfl: 118.9826
+2024/07/24 11:26:42 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:26:42 - mmengine - INFO - Saving checkpoint at 90 epochs
+2024/07/24 11:26:45 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:27:10 - mmengine - INFO - bbox_mAP_copypaste: 0.216 0.369 0.215 0.123 0.328 0.407
+2024/07/24 11:27:10 - mmengine - INFO - Epoch(val) [90][5/5]    coco/bbox_mAP: 0.2160  coco/bbox_mAP_50: 0.3690  coco/bbox_mAP_75: 0.2150  coco/bbox_mAP_s: 0.1230  coco/bbox_mAP_m: 0.3280  coco/bbox_mAP_l: 0.4070  data_time: 0.0544  time: 0.1152
+2024/07/24 11:27:10 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_80.pth is removed
+2024/07/24 11:27:11 - mmengine - INFO - The best checkpoint with 0.2160 coco/bbox_mAP at 90 epoch is saved to best_coco_bbox_mAP_epoch_90.pth.
+2024/07/24 11:27:24 - mmengine - INFO - Epoch(train)  [91][50/51]  base_lr: 8.0000e-02 lr: 5.6504e-02  eta: 0:42:19  time: 0.2288  data_time: 0.0180  memory: 13688  grad_norm: 71.9295  loss: 409.1724  loss_cls: 118.4205  loss_bbox: 171.5214  loss_dfl: 119.2306
+2024/07/24 11:27:24 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:27:36 - mmengine - INFO - Epoch(train)  [92][50/51]  base_lr: 8.0000e-02 lr: 5.6240e-02  eta: 0:42:06  time: 0.2353  data_time: 0.0182  memory: 14781  grad_norm: 70.1260  loss: 410.5660  loss_cls: 118.5328  loss_bbox: 172.6806  loss_dfl: 119.3526
+2024/07/24 11:27:36 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:27:47 - mmengine - INFO - Epoch(train)  [93][50/51]  base_lr: 8.0000e-02 lr: 5.5976e-02  eta: 0:41:53  time: 0.2348  data_time: 0.0175  memory: 12195  grad_norm: 71.2682  loss: 403.3453  loss_cls: 115.5725  loss_bbox: 168.9011  loss_dfl: 118.8717
+2024/07/24 11:27:48 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:27:59 - mmengine - INFO - Epoch(train)  [94][50/51]  base_lr: 8.0000e-02 lr: 5.5712e-02  eta: 0:41:40  time: 0.2354  data_time: 0.0223  memory: 12288  grad_norm: 70.0871  loss: 406.0230  loss_cls: 116.7321  loss_bbox: 170.3939  loss_dfl: 118.8970
+2024/07/24 11:27:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:28:11 - mmengine - INFO - Epoch(train)  [95][50/51]  base_lr: 8.0000e-02 lr: 5.5448e-02  eta: 0:41:28  time: 0.2360  data_time: 0.0193  memory: 12235  grad_norm: 71.4863  loss: 409.2657  loss_cls: 117.9588  loss_bbox: 172.3130  loss_dfl: 118.9938
+2024/07/24 11:28:11 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:28:23 - mmengine - INFO - Epoch(train)  [96][50/51]  base_lr: 8.0000e-02 lr: 5.5184e-02  eta: 0:41:15  time: 0.2375  data_time: 0.0171  memory: 12915  grad_norm: 70.7724  loss: 403.9149  loss_cls: 115.0250  loss_bbox: 169.4705  loss_dfl: 119.4194
+2024/07/24 11:28:23 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:28:36 - mmengine - INFO - Epoch(train)  [97][50/51]  base_lr: 8.0000e-02 lr: 5.4920e-02  eta: 0:41:04  time: 0.2503  data_time: 0.0191  memory: 12808  grad_norm: 70.1930  loss: 403.3042  loss_cls: 115.2994  loss_bbox: 169.0871  loss_dfl: 118.9177
+2024/07/24 11:28:36 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:28:49 - mmengine - INFO - Epoch(train)  [98][50/51]  base_lr: 8.0000e-02 lr: 5.4656e-02  eta: 0:40:53  time: 0.2503  data_time: 0.0234  memory: 12728  grad_norm: 70.4158  loss: 404.0676  loss_cls: 115.5224  loss_bbox: 170.1510  loss_dfl: 118.3942
+2024/07/24 11:28:49 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:28:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:29:01 - mmengine - INFO - Epoch(train)  [99][50/51]  base_lr: 8.0000e-02 lr: 5.4392e-02  eta: 0:40:42  time: 0.2524  data_time: 0.0179  memory: 13141  grad_norm: 72.1280  loss: 403.5460  loss_cls: 115.5266  loss_bbox: 169.3583  loss_dfl: 118.6611
+2024/07/24 11:29:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:29:13 - mmengine - INFO - Epoch(train) [100][50/51]  base_lr: 8.0000e-02 lr: 5.4128e-02  eta: 0:40:30  time: 0.2334  data_time: 0.0188  memory: 12008  grad_norm: 70.2388  loss: 404.3472  loss_cls: 115.4836  loss_bbox: 169.7350  loss_dfl: 119.1286
+2024/07/24 11:29:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:29:13 - mmengine - INFO - Saving checkpoint at 100 epochs
+2024/07/24 11:29:17 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:29:42 - mmengine - INFO - bbox_mAP_copypaste: 0.221 0.374 0.223 0.125 0.336 0.425
+2024/07/24 11:29:42 - mmengine - INFO - Epoch(val) [100][5/5]    coco/bbox_mAP: 0.2210  coco/bbox_mAP_50: 0.3740  coco/bbox_mAP_75: 0.2230  coco/bbox_mAP_s: 0.1250  coco/bbox_mAP_m: 0.3360  coco/bbox_mAP_l: 0.4250  data_time: 0.0455  time: 0.0991
+2024/07/24 11:29:42 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_90.pth is removed
+2024/07/24 11:29:42 - mmengine - INFO - The best checkpoint with 0.2210 coco/bbox_mAP at 100 epoch is saved to best_coco_bbox_mAP_epoch_100.pth.
+2024/07/24 11:29:55 - mmengine - INFO - Epoch(train) [101][50/51]  base_lr: 8.0000e-02 lr: 5.3864e-02  eta: 0:40:17  time: 0.2319  data_time: 0.0220  memory: 11501  grad_norm: 70.6443  loss: 401.7447  loss_cls: 114.4795  loss_bbox: 168.8974  loss_dfl: 118.3679
+2024/07/24 11:29:55 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:30:07 - mmengine - INFO - Epoch(train) [102][50/51]  base_lr: 8.0000e-02 lr: 5.3600e-02  eta: 0:40:04  time: 0.2389  data_time: 0.0185  memory: 14221  grad_norm: 70.7907  loss: 408.1450  loss_cls: 116.7308  loss_bbox: 172.2809  loss_dfl: 119.1333
+2024/07/24 11:30:07 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:30:19 - mmengine - INFO - Epoch(train) [103][50/51]  base_lr: 8.0000e-02 lr: 5.3336e-02  eta: 0:39:51  time: 0.2305  data_time: 0.0184  memory: 11941  grad_norm: 71.1339  loss: 403.8082  loss_cls: 115.2582  loss_bbox: 169.7599  loss_dfl: 118.7900
+2024/07/24 11:30:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:30:31 - mmengine - INFO - Epoch(train) [104][50/51]  base_lr: 8.0000e-02 lr: 5.3072e-02  eta: 0:39:39  time: 0.2377  data_time: 0.0184  memory: 12955  grad_norm: 69.4043  loss: 402.7821  loss_cls: 114.2248  loss_bbox: 170.0036  loss_dfl: 118.5536
+2024/07/24 11:30:31 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:30:43 - mmengine - INFO - Epoch(train) [105][50/51]  base_lr: 8.0000e-02 lr: 5.2808e-02  eta: 0:39:26  time: 0.2358  data_time: 0.0169  memory: 14755  grad_norm: 70.6900  loss: 399.0401  loss_cls: 113.0903  loss_bbox: 167.7949  loss_dfl: 118.1549
+2024/07/24 11:30:43 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:30:55 - mmengine - INFO - Epoch(train) [106][50/51]  base_lr: 8.0000e-02 lr: 5.2544e-02  eta: 0:39:14  time: 0.2358  data_time: 0.0194  memory: 13888  grad_norm: 70.5441  loss: 398.7277  loss_cls: 112.9141  loss_bbox: 167.6513  loss_dfl: 118.1623
+2024/07/24 11:30:55 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:31:07 - mmengine - INFO - Epoch(train) [107][50/51]  base_lr: 8.0000e-02 lr: 5.2280e-02  eta: 0:39:01  time: 0.2362  data_time: 0.0174  memory: 11701  grad_norm: 70.1357  loss: 403.5639  loss_cls: 114.6458  loss_bbox: 169.9198  loss_dfl: 118.9983
+2024/07/24 11:31:07 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:31:19 - mmengine - INFO - Epoch(train) [108][50/51]  base_lr: 8.0000e-02 lr: 5.2016e-02  eta: 0:38:49  time: 0.2341  data_time: 0.0191  memory: 11968  grad_norm: 71.0153  loss: 396.6213  loss_cls: 112.8000  loss_bbox: 165.4683  loss_dfl: 118.3530
+2024/07/24 11:31:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:31:31 - mmengine - INFO - Epoch(train) [109][50/51]  base_lr: 8.0000e-02 lr: 5.1752e-02  eta: 0:38:36  time: 0.2380  data_time: 0.0174  memory: 11435  grad_norm: 69.6812  loss: 400.3713  loss_cls: 113.4639  loss_bbox: 168.1861  loss_dfl: 118.7213
+2024/07/24 11:31:31 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:31:42 - mmengine - INFO - Epoch(train) [110][50/51]  base_lr: 8.0000e-02 lr: 5.1488e-02  eta: 0:38:24  time: 0.2335  data_time: 0.0176  memory: 13168  grad_norm: 69.9369  loss: 399.4967  loss_cls: 113.5050  loss_bbox: 168.2921  loss_dfl: 117.6997
+2024/07/24 11:31:43 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:31:43 - mmengine - INFO - Saving checkpoint at 110 epochs
+2024/07/24 11:31:46 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:32:11 - mmengine - INFO - bbox_mAP_copypaste: 0.223 0.377 0.227 0.129 0.336 0.419
+2024/07/24 11:32:11 - mmengine - INFO - Epoch(val) [110][5/5]    coco/bbox_mAP: 0.2230  coco/bbox_mAP_50: 0.3770  coco/bbox_mAP_75: 0.2270  coco/bbox_mAP_s: 0.1290  coco/bbox_mAP_m: 0.3360  coco/bbox_mAP_l: 0.4190  data_time: 0.0523  time: 0.1073
+2024/07/24 11:32:11 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_100.pth is removed
+2024/07/24 11:32:12 - mmengine - INFO - The best checkpoint with 0.2230 coco/bbox_mAP at 110 epoch is saved to best_coco_bbox_mAP_epoch_110.pth.
+2024/07/24 11:32:25 - mmengine - INFO - Epoch(train) [111][50/51]  base_lr: 8.0000e-02 lr: 5.1224e-02  eta: 0:38:11  time: 0.2351  data_time: 0.0215  memory: 15235  grad_norm: 70.7229  loss: 396.6410  loss_cls: 112.8248  loss_bbox: 165.7833  loss_dfl: 118.0329
+2024/07/24 11:32:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:32:37 - mmengine - INFO - Epoch(train) [112][50/51]  base_lr: 8.0000e-02 lr: 5.0960e-02  eta: 0:37:59  time: 0.2399  data_time: 0.0187  memory: 13448  grad_norm: 70.2268  loss: 401.5656  loss_cls: 114.4966  loss_bbox: 169.1022  loss_dfl: 117.9669
+2024/07/24 11:32:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:32:49 - mmengine - INFO - Epoch(train) [113][50/51]  base_lr: 8.0000e-02 lr: 5.0696e-02  eta: 0:37:47  time: 0.2349  data_time: 0.0181  memory: 12408  grad_norm: 70.9053  loss: 399.6933  loss_cls: 113.2360  loss_bbox: 168.6198  loss_dfl: 117.8375
+2024/07/24 11:32:49 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:33:01 - mmengine - INFO - Epoch(train) [114][50/51]  base_lr: 8.0000e-02 lr: 5.0432e-02  eta: 0:37:35  time: 0.2402  data_time: 0.0184  memory: 13261  grad_norm: 69.4568  loss: 398.0746  loss_cls: 112.6760  loss_bbox: 166.8629  loss_dfl: 118.5357
+2024/07/24 11:33:01 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:33:13 - mmengine - INFO - Epoch(train) [115][50/51]  base_lr: 8.0000e-02 lr: 5.0168e-02  eta: 0:37:22  time: 0.2349  data_time: 0.0171  memory: 12021  grad_norm: 70.0591  loss: 395.1587  loss_cls: 111.3817  loss_bbox: 166.7455  loss_dfl: 117.0315
+2024/07/24 11:33:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:33:25 - mmengine - INFO - Epoch(train) [116][50/51]  base_lr: 8.0000e-02 lr: 4.9904e-02  eta: 0:37:10  time: 0.2364  data_time: 0.0201  memory: 13315  grad_norm: 71.3397  loss: 397.0319  loss_cls: 112.1051  loss_bbox: 167.2707  loss_dfl: 117.6561
+2024/07/24 11:33:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:33:37 - mmengine - INFO - Epoch(train) [117][50/51]  base_lr: 8.0000e-02 lr: 4.9640e-02  eta: 0:36:58  time: 0.2402  data_time: 0.0173  memory: 12955  grad_norm: 71.6292  loss: 390.8240  loss_cls: 111.3306  loss_bbox: 162.8167  loss_dfl: 116.6767
+2024/07/24 11:33:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:33:46 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:33:49 - mmengine - INFO - Epoch(train) [118][50/51]  base_lr: 8.0000e-02 lr: 4.9376e-02  eta: 0:36:45  time: 0.2387  data_time: 0.0176  memory: 12235  grad_norm: 70.7596  loss: 397.4549  loss_cls: 112.6695  loss_bbox: 167.2688  loss_dfl: 117.5165
+2024/07/24 11:33:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:34:01 - mmengine - INFO - Epoch(train) [119][50/51]  base_lr: 8.0000e-02 lr: 4.9112e-02  eta: 0:36:33  time: 0.2370  data_time: 0.0191  memory: 12781  grad_norm: 70.3976  loss: 397.5268  loss_cls: 111.8392  loss_bbox: 167.6732  loss_dfl: 118.0144
+2024/07/24 11:34:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:34:13 - mmengine - INFO - Epoch(train) [120][50/51]  base_lr: 8.0000e-02 lr: 4.8848e-02  eta: 0:36:21  time: 0.2370  data_time: 0.0173  memory: 11995  grad_norm: 72.0615  loss: 394.1525  loss_cls: 110.5907  loss_bbox: 165.3217  loss_dfl: 118.2401
+2024/07/24 11:34:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:34:14 - mmengine - INFO - Saving checkpoint at 120 epochs
+2024/07/24 11:34:17 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:34:42 - mmengine - INFO - bbox_mAP_copypaste: 0.227 0.384 0.228 0.132 0.341 0.465
+2024/07/24 11:34:42 - mmengine - INFO - Epoch(val) [120][5/5]    coco/bbox_mAP: 0.2270  coco/bbox_mAP_50: 0.3840  coco/bbox_mAP_75: 0.2280  coco/bbox_mAP_s: 0.1320  coco/bbox_mAP_m: 0.3410  coco/bbox_mAP_l: 0.4650  data_time: 0.0434  time: 0.1002
+2024/07/24 11:34:42 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_110.pth is removed
+2024/07/24 11:34:42 - mmengine - INFO - The best checkpoint with 0.2270 coco/bbox_mAP at 120 epoch is saved to best_coco_bbox_mAP_epoch_120.pth.
+2024/07/24 11:34:55 - mmengine - INFO - Epoch(train) [121][50/51]  base_lr: 8.0000e-02 lr: 4.8584e-02  eta: 0:36:08  time: 0.2322  data_time: 0.0217  memory: 12381  grad_norm: 70.1343  loss: 393.6720  loss_cls: 111.2076  loss_bbox: 165.1786  loss_dfl: 117.2858
+2024/07/24 11:34:55 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:35:07 - mmengine - INFO - Epoch(train) [122][50/51]  base_lr: 8.0000e-02 lr: 4.8320e-02  eta: 0:35:55  time: 0.2334  data_time: 0.0218  memory: 14008  grad_norm: 70.1047  loss: 392.5370  loss_cls: 111.2489  loss_bbox: 164.3619  loss_dfl: 116.9263
+2024/07/24 11:35:07 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:35:19 - mmengine - INFO - Epoch(train) [123][50/51]  base_lr: 8.0000e-02 lr: 4.8056e-02  eta: 0:35:43  time: 0.2367  data_time: 0.0204  memory: 13901  grad_norm: 70.5715  loss: 395.6981  loss_cls: 112.2840  loss_bbox: 166.0828  loss_dfl: 117.3312
+2024/07/24 11:35:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:35:32 - mmengine - INFO - Epoch(train) [124][50/51]  base_lr: 8.0000e-02 lr: 4.7792e-02  eta: 0:35:32  time: 0.2471  data_time: 0.0179  memory: 11848  grad_norm: 71.3058  loss: 394.2574  loss_cls: 111.0709  loss_bbox: 165.5648  loss_dfl: 117.6217
+2024/07/24 11:35:32 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:35:44 - mmengine - INFO - Epoch(train) [125][50/51]  base_lr: 8.0000e-02 lr: 4.7528e-02  eta: 0:35:19  time: 0.2383  data_time: 0.0165  memory: 12261  grad_norm: 69.3167  loss: 392.2238  loss_cls: 110.6344  loss_bbox: 164.5254  loss_dfl: 117.0639
+2024/07/24 11:35:44 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:35:56 - mmengine - INFO - Epoch(train) [126][50/51]  base_lr: 8.0000e-02 lr: 4.7264e-02  eta: 0:35:07  time: 0.2382  data_time: 0.0194  memory: 14168  grad_norm: 70.0198  loss: 391.0345  loss_cls: 109.9797  loss_bbox: 163.8314  loss_dfl: 117.2234
+2024/07/24 11:35:56 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:36:07 - mmengine - INFO - Epoch(train) [127][50/51]  base_lr: 8.0000e-02 lr: 4.7000e-02  eta: 0:34:55  time: 0.2338  data_time: 0.0172  memory: 12661  grad_norm: 70.7848  loss: 392.5123  loss_cls: 110.2773  loss_bbox: 165.3560  loss_dfl: 116.8790
+2024/07/24 11:36:08 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:36:19 - mmengine - INFO - Epoch(train) [128][50/51]  base_lr: 8.0000e-02 lr: 4.6736e-02  eta: 0:34:42  time: 0.2350  data_time: 0.0186  memory: 16461  grad_norm: 71.2730  loss: 388.9974  loss_cls: 108.9062  loss_bbox: 163.3670  loss_dfl: 116.7243
+2024/07/24 11:36:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:36:31 - mmengine - INFO - Epoch(train) [129][50/51]  base_lr: 8.0000e-02 lr: 4.6472e-02  eta: 0:34:30  time: 0.2366  data_time: 0.0185  memory: 12448  grad_norm: 68.7839  loss: 392.9134  loss_cls: 110.9919  loss_bbox: 165.3645  loss_dfl: 116.5569
+2024/07/24 11:36:31 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:36:43 - mmengine - INFO - Epoch(train) [130][50/51]  base_lr: 8.0000e-02 lr: 4.6208e-02  eta: 0:34:18  time: 0.2360  data_time: 0.0184  memory: 12541  grad_norm: 73.1973  loss: 389.8036  loss_cls: 109.2399  loss_bbox: 163.6441  loss_dfl: 116.9196
+2024/07/24 11:36:43 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:36:43 - mmengine - INFO - Saving checkpoint at 130 epochs
+2024/07/24 11:36:47 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:37:12 - mmengine - INFO - bbox_mAP_copypaste: 0.228 0.386 0.230 0.135 0.345 0.443
+2024/07/24 11:37:12 - mmengine - INFO - Epoch(val) [130][5/5]    coco/bbox_mAP: 0.2280  coco/bbox_mAP_50: 0.3860  coco/bbox_mAP_75: 0.2300  coco/bbox_mAP_s: 0.1350  coco/bbox_mAP_m: 0.3450  coco/bbox_mAP_l: 0.4430  data_time: 0.0456  time: 0.1005
+2024/07/24 11:37:12 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_120.pth is removed
+2024/07/24 11:37:13 - mmengine - INFO - The best checkpoint with 0.2280 coco/bbox_mAP at 130 epoch is saved to best_coco_bbox_mAP_epoch_130.pth.
+2024/07/24 11:37:26 - mmengine - INFO - Epoch(train) [131][50/51]  base_lr: 8.0000e-02 lr: 4.5944e-02  eta: 0:34:05  time: 0.2326  data_time: 0.0212  memory: 11981  grad_norm: 70.3304  loss: 386.2252  loss_cls: 108.9726  loss_bbox: 160.5372  loss_dfl: 116.7155
+2024/07/24 11:37:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:37:37 - mmengine - INFO - Epoch(train) [132][50/51]  base_lr: 8.0000e-02 lr: 4.5680e-02  eta: 0:33:53  time: 0.2355  data_time: 0.0199  memory: 12235  grad_norm: 69.9367  loss: 386.5683  loss_cls: 108.5196  loss_bbox: 160.8210  loss_dfl: 117.2277
+2024/07/24 11:37:38 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:37:50 - mmengine - INFO - Epoch(train) [133][50/51]  base_lr: 8.0000e-02 lr: 4.5416e-02  eta: 0:33:41  time: 0.2382  data_time: 0.0189  memory: 13315  grad_norm: 71.9454  loss: 387.6288  loss_cls: 108.7639  loss_bbox: 163.0810  loss_dfl: 115.7838
+2024/07/24 11:37:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:38:02 - mmengine - INFO - Epoch(train) [134][50/51]  base_lr: 8.0000e-02 lr: 4.5152e-02  eta: 0:33:29  time: 0.2396  data_time: 0.0191  memory: 12488  grad_norm: 72.0460  loss: 387.6313  loss_cls: 107.9540  loss_bbox: 163.1904  loss_dfl: 116.4869
+2024/07/24 11:38:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:38:14 - mmengine - INFO - Epoch(train) [135][50/51]  base_lr: 8.0000e-02 lr: 4.4888e-02  eta: 0:33:16  time: 0.2349  data_time: 0.0174  memory: 12848  grad_norm: 71.8748  loss: 389.9709  loss_cls: 109.4427  loss_bbox: 163.7958  loss_dfl: 116.7324
+2024/07/24 11:38:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:38:26 - mmengine - INFO - Epoch(train) [136][50/51]  base_lr: 8.0000e-02 lr: 4.4624e-02  eta: 0:33:04  time: 0.2399  data_time: 0.0177  memory: 11755  grad_norm: 71.8498  loss: 385.6104  loss_cls: 106.8967  loss_bbox: 162.0902  loss_dfl: 116.6236
+2024/07/24 11:38:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:38:38 - mmengine - INFO - Epoch(train) [137][50/51]  base_lr: 8.0000e-02 lr: 4.4360e-02  eta: 0:32:52  time: 0.2348  data_time: 0.0169  memory: 12701  grad_norm: 71.5075  loss: 386.7210  loss_cls: 107.7384  loss_bbox: 162.1371  loss_dfl: 116.8454
+2024/07/24 11:38:38 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:38:42 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:38:49 - mmengine - INFO - Epoch(train) [138][50/51]  base_lr: 8.0000e-02 lr: 4.4096e-02  eta: 0:32:39  time: 0.2351  data_time: 0.0183  memory: 12888  grad_norm: 70.6689  loss: 388.1523  loss_cls: 108.4081  loss_bbox: 163.3112  loss_dfl: 116.4330
+2024/07/24 11:38:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:39:01 - mmengine - INFO - Epoch(train) [139][50/51]  base_lr: 8.0000e-02 lr: 4.3832e-02  eta: 0:32:27  time: 0.2317  data_time: 0.0172  memory: 13035  grad_norm: 72.6206  loss: 383.4077  loss_cls: 106.6213  loss_bbox: 160.4333  loss_dfl: 116.3531
+2024/07/24 11:39:01 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:39:13 - mmengine - INFO - Epoch(train) [140][50/51]  base_lr: 8.0000e-02 lr: 4.3568e-02  eta: 0:32:15  time: 0.2372  data_time: 0.0179  memory: 13395  grad_norm: 71.0736  loss: 385.4629  loss_cls: 107.2945  loss_bbox: 161.4805  loss_dfl: 116.6879
+2024/07/24 11:39:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:39:13 - mmengine - INFO - Saving checkpoint at 140 epochs
+2024/07/24 11:39:17 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:39:42 - mmengine - INFO - bbox_mAP_copypaste: 0.232 0.392 0.236 0.140 0.350 0.455
+2024/07/24 11:39:42 - mmengine - INFO - Epoch(val) [140][5/5]    coco/bbox_mAP: 0.2320  coco/bbox_mAP_50: 0.3920  coco/bbox_mAP_75: 0.2360  coco/bbox_mAP_s: 0.1400  coco/bbox_mAP_m: 0.3500  coco/bbox_mAP_l: 0.4550  data_time: 0.0382  time: 0.0963
+2024/07/24 11:39:42 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_130.pth is removed
+2024/07/24 11:39:43 - mmengine - INFO - The best checkpoint with 0.2320 coco/bbox_mAP at 140 epoch is saved to best_coco_bbox_mAP_epoch_140.pth.
+2024/07/24 11:39:55 - mmengine - INFO - Epoch(train) [141][50/51]  base_lr: 8.0000e-02 lr: 4.3304e-02  eta: 0:32:02  time: 0.2310  data_time: 0.0215  memory: 12141  grad_norm: 71.9456  loss: 390.6432  loss_cls: 109.7453  loss_bbox: 164.0876  loss_dfl: 116.8104
+2024/07/24 11:39:55 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:40:07 - mmengine - INFO - Epoch(train) [142][50/51]  base_lr: 8.0000e-02 lr: 4.3040e-02  eta: 0:31:50  time: 0.2342  data_time: 0.0173  memory: 12221  grad_norm: 71.0647  loss: 387.1891  loss_cls: 108.6161  loss_bbox: 161.9917  loss_dfl: 116.5814
+2024/07/24 11:40:07 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:40:19 - mmengine - INFO - Epoch(train) [143][50/51]  base_lr: 8.0000e-02 lr: 4.2776e-02  eta: 0:31:38  time: 0.2364  data_time: 0.0221  memory: 13021  grad_norm: 71.9756  loss: 387.0254  loss_cls: 108.5471  loss_bbox: 161.9526  loss_dfl: 116.5257
+2024/07/24 11:40:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:40:31 - mmengine - INFO - Epoch(train) [144][50/51]  base_lr: 8.0000e-02 lr: 4.2512e-02  eta: 0:31:25  time: 0.2325  data_time: 0.0179  memory: 12461  grad_norm: 71.6160  loss: 386.0403  loss_cls: 107.2085  loss_bbox: 162.4024  loss_dfl: 116.4295
+2024/07/24 11:40:31 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:40:43 - mmengine - INFO - Epoch(train) [145][50/51]  base_lr: 8.0000e-02 lr: 4.2248e-02  eta: 0:31:13  time: 0.2352  data_time: 0.0201  memory: 14235  grad_norm: 72.0420  loss: 387.1904  loss_cls: 107.3751  loss_bbox: 162.9918  loss_dfl: 116.8234
+2024/07/24 11:40:43 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:40:55 - mmengine - INFO - Epoch(train) [146][50/51]  base_lr: 8.0000e-02 lr: 4.1984e-02  eta: 0:31:00  time: 0.2344  data_time: 0.0170  memory: 14088  grad_norm: 72.1685  loss: 384.8122  loss_cls: 106.5512  loss_bbox: 162.0194  loss_dfl: 116.2416
+2024/07/24 11:40:55 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:41:06 - mmengine - INFO - Epoch(train) [147][50/51]  base_lr: 8.0000e-02 lr: 4.1720e-02  eta: 0:30:48  time: 0.2323  data_time: 0.0193  memory: 11835  grad_norm: 71.6292  loss: 382.1192  loss_cls: 105.4646  loss_bbox: 160.8213  loss_dfl: 115.8333
+2024/07/24 11:41:06 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:41:18 - mmengine - INFO - Epoch(train) [148][50/51]  base_lr: 8.0000e-02 lr: 4.1456e-02  eta: 0:30:36  time: 0.2398  data_time: 0.0188  memory: 18795  grad_norm: 70.8869  loss: 383.3040  loss_cls: 106.3933  loss_bbox: 160.4118  loss_dfl: 116.4990
+2024/07/24 11:41:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:41:30 - mmengine - INFO - Epoch(train) [149][50/51]  base_lr: 8.0000e-02 lr: 4.1192e-02  eta: 0:30:24  time: 0.2315  data_time: 0.0194  memory: 13368  grad_norm: 72.8369  loss: 379.8394  loss_cls: 105.4389  loss_bbox: 158.5497  loss_dfl: 115.8508
+2024/07/24 11:41:30 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:41:42 - mmengine - INFO - Epoch(train) [150][50/51]  base_lr: 8.0000e-02 lr: 4.0928e-02  eta: 0:30:11  time: 0.2368  data_time: 0.0189  memory: 12595  grad_norm: 72.8794  loss: 380.3772  loss_cls: 105.7883  loss_bbox: 158.9802  loss_dfl: 115.6087
+2024/07/24 11:41:42 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:41:42 - mmengine - INFO - Saving checkpoint at 150 epochs
+2024/07/24 11:41:46 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:42:11 - mmengine - INFO - bbox_mAP_copypaste: 0.234 0.397 0.235 0.142 0.352 0.447
+2024/07/24 11:42:11 - mmengine - INFO - Epoch(val) [150][5/5]    coco/bbox_mAP: 0.2340  coco/bbox_mAP_50: 0.3970  coco/bbox_mAP_75: 0.2350  coco/bbox_mAP_s: 0.1420  coco/bbox_mAP_m: 0.3520  coco/bbox_mAP_l: 0.4470  data_time: 0.0565  time: 0.1107
+2024/07/24 11:42:11 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_140.pth is removed
+2024/07/24 11:42:12 - mmengine - INFO - The best checkpoint with 0.2340 coco/bbox_mAP at 150 epoch is saved to best_coco_bbox_mAP_epoch_150.pth.
+2024/07/24 11:42:24 - mmengine - INFO - Epoch(train) [151][50/51]  base_lr: 8.0000e-02 lr: 4.0664e-02  eta: 0:29:59  time: 0.2315  data_time: 0.0188  memory: 11915  grad_norm: 71.6768  loss: 383.3805  loss_cls: 106.0149  loss_bbox: 161.0413  loss_dfl: 116.3244
+2024/07/24 11:42:24 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:42:36 - mmengine - INFO - Epoch(train) [152][50/51]  base_lr: 8.0000e-02 lr: 4.0400e-02  eta: 0:29:47  time: 0.2329  data_time: 0.0208  memory: 11381  grad_norm: 72.6258  loss: 380.7706  loss_cls: 105.7641  loss_bbox: 159.4993  loss_dfl: 115.5072
+2024/07/24 11:42:36 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:42:48 - mmengine - INFO - Epoch(train) [153][50/51]  base_lr: 8.0000e-02 lr: 4.0136e-02  eta: 0:29:34  time: 0.2348  data_time: 0.0234  memory: 13088  grad_norm: 71.0267  loss: 381.9039  loss_cls: 105.7371  loss_bbox: 160.4013  loss_dfl: 115.7655
+2024/07/24 11:42:48 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:00 - mmengine - INFO - Epoch(train) [154][50/51]  base_lr: 8.0000e-02 lr: 3.9872e-02  eta: 0:29:22  time: 0.2277  data_time: 0.0176  memory: 12968  grad_norm: 73.6711  loss: 383.8772  loss_cls: 105.7499  loss_bbox: 161.3834  loss_dfl: 116.7438
+2024/07/24 11:43:00 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:12 - mmengine - INFO - Epoch(train) [155][50/51]  base_lr: 8.0000e-02 lr: 3.9608e-02  eta: 0:29:10  time: 0.2382  data_time: 0.0197  memory: 12408  grad_norm: 72.3123  loss: 379.7537  loss_cls: 104.7482  loss_bbox: 159.6417  loss_dfl: 115.3638
+2024/07/24 11:43:12 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:23 - mmengine - INFO - Epoch(train) [156][50/51]  base_lr: 8.0000e-02 lr: 3.9344e-02  eta: 0:28:57  time: 0.2334  data_time: 0.0195  memory: 13128  grad_norm: 74.1038  loss: 382.8124  loss_cls: 106.1902  loss_bbox: 160.9662  loss_dfl: 115.6560
+2024/07/24 11:43:24 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:34 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:35 - mmengine - INFO - Epoch(train) [157][50/51]  base_lr: 8.0000e-02 lr: 3.9080e-02  eta: 0:28:45  time: 0.2362  data_time: 0.0190  memory: 13555  grad_norm: 71.9259  loss: 382.5036  loss_cls: 104.8758  loss_bbox: 162.0239  loss_dfl: 115.6039
+2024/07/24 11:43:36 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:47 - mmengine - INFO - Epoch(train) [158][50/51]  base_lr: 8.0000e-02 lr: 3.8816e-02  eta: 0:28:33  time: 0.2307  data_time: 0.0175  memory: 13901  grad_norm: 73.6346  loss: 380.0943  loss_cls: 104.4857  loss_bbox: 159.9611  loss_dfl: 115.6475
+2024/07/24 11:43:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:43:59 - mmengine - INFO - Epoch(train) [159][50/51]  base_lr: 8.0000e-02 lr: 3.8552e-02  eta: 0:28:21  time: 0.2366  data_time: 0.0188  memory: 12968  grad_norm: 71.6806  loss: 381.5004  loss_cls: 105.3894  loss_bbox: 159.9037  loss_dfl: 116.2074
+2024/07/24 11:43:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:44:11 - mmengine - INFO - Epoch(train) [160][50/51]  base_lr: 8.0000e-02 lr: 3.8288e-02  eta: 0:28:09  time: 0.2379  data_time: 0.0173  memory: 12035  grad_norm: 73.5185  loss: 378.2185  loss_cls: 103.3818  loss_bbox: 159.0594  loss_dfl: 115.7772
+2024/07/24 11:44:11 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:44:11 - mmengine - INFO - Saving checkpoint at 160 epochs
+2024/07/24 11:44:15 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:44:39 - mmengine - INFO - bbox_mAP_copypaste: 0.238 0.401 0.238 0.144 0.357 0.451
+2024/07/24 11:44:40 - mmengine - INFO - Epoch(val) [160][5/5]    coco/bbox_mAP: 0.2380  coco/bbox_mAP_50: 0.4010  coco/bbox_mAP_75: 0.2380  coco/bbox_mAP_s: 0.1440  coco/bbox_mAP_m: 0.3570  coco/bbox_mAP_l: 0.4510  data_time: 0.0458  time: 0.0986
+2024/07/24 11:44:40 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_150.pth is removed
+2024/07/24 11:44:40 - mmengine - INFO - The best checkpoint with 0.2380 coco/bbox_mAP at 160 epoch is saved to best_coco_bbox_mAP_epoch_160.pth.
+2024/07/24 11:44:53 - mmengine - INFO - Epoch(train) [161][50/51]  base_lr: 8.0000e-02 lr: 3.8024e-02  eta: 0:27:56  time: 0.2275  data_time: 0.0175  memory: 11381  grad_norm: 72.3467  loss: 378.1064  loss_cls: 104.6848  loss_bbox: 158.2963  loss_dfl: 115.1254
+2024/07/24 11:44:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:45:05 - mmengine - INFO - Epoch(train) [162][50/51]  base_lr: 8.0000e-02 lr: 3.7760e-02  eta: 0:27:44  time: 0.2348  data_time: 0.0199  memory: 11821  grad_norm: 73.5398  loss: 378.7614  loss_cls: 103.9254  loss_bbox: 158.8999  loss_dfl: 115.9361
+2024/07/24 11:45:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:45:17 - mmengine - INFO - Epoch(train) [163][50/51]  base_lr: 8.0000e-02 lr: 3.7496e-02  eta: 0:27:32  time: 0.2356  data_time: 0.0180  memory: 16648  grad_norm: 72.3050  loss: 376.2586  loss_cls: 103.3861  loss_bbox: 158.0129  loss_dfl: 114.8596
+2024/07/24 11:45:17 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:45:29 - mmengine - INFO - Epoch(train) [164][50/51]  base_lr: 8.0000e-02 lr: 3.7232e-02  eta: 0:27:20  time: 0.2501  data_time: 0.0198  memory: 12408  grad_norm: 73.5824  loss: 375.5822  loss_cls: 103.7401  loss_bbox: 156.6252  loss_dfl: 115.2169
+2024/07/24 11:45:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:45:42 - mmengine - INFO - Epoch(train) [165][50/51]  base_lr: 8.0000e-02 lr: 3.6968e-02  eta: 0:27:09  time: 0.2578  data_time: 0.0182  memory: 12435  grad_norm: 73.5438  loss: 374.5050  loss_cls: 102.0037  loss_bbox: 157.4829  loss_dfl: 115.0183
+2024/07/24 11:45:42 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:45:54 - mmengine - INFO - Epoch(train) [166][50/51]  base_lr: 8.0000e-02 lr: 3.6704e-02  eta: 0:26:57  time: 0.2348  data_time: 0.0191  memory: 12555  grad_norm: 73.6782  loss: 378.3425  loss_cls: 103.0625  loss_bbox: 159.8138  loss_dfl: 115.4662
+2024/07/24 11:45:54 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:46:06 - mmengine - INFO - Epoch(train) [167][50/51]  base_lr: 8.0000e-02 lr: 3.6440e-02  eta: 0:26:44  time: 0.2348  data_time: 0.0218  memory: 11501  grad_norm: 73.1550  loss: 372.0208  loss_cls: 101.3967  loss_bbox: 156.1330  loss_dfl: 114.4911
+2024/07/24 11:46:06 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:46:18 - mmengine - INFO - Epoch(train) [168][50/51]  base_lr: 8.0000e-02 lr: 3.6176e-02  eta: 0:26:32  time: 0.2348  data_time: 0.0171  memory: 11715  grad_norm: 74.7498  loss: 375.0698  loss_cls: 103.1048  loss_bbox: 156.5894  loss_dfl: 115.3756
+2024/07/24 11:46:18 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:46:30 - mmengine - INFO - Epoch(train) [169][50/51]  base_lr: 8.0000e-02 lr: 3.5912e-02  eta: 0:26:20  time: 0.2356  data_time: 0.0203  memory: 13448  grad_norm: 72.5120  loss: 373.9331  loss_cls: 101.7204  loss_bbox: 157.0857  loss_dfl: 115.1270
+2024/07/24 11:46:30 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:46:42 - mmengine - INFO - Epoch(train) [170][50/51]  base_lr: 8.0000e-02 lr: 3.5648e-02  eta: 0:26:08  time: 0.2317  data_time: 0.0173  memory: 11915  grad_norm: 74.3906  loss: 376.4865  loss_cls: 102.6831  loss_bbox: 158.4509  loss_dfl: 115.3525
+2024/07/24 11:46:42 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:46:42 - mmengine - INFO - Saving checkpoint at 170 epochs
+2024/07/24 11:46:45 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:47:10 - mmengine - INFO - bbox_mAP_copypaste: 0.240 0.403 0.242 0.146 0.359 0.479
+2024/07/24 11:47:10 - mmengine - INFO - Epoch(val) [170][5/5]    coco/bbox_mAP: 0.2400  coco/bbox_mAP_50: 0.4030  coco/bbox_mAP_75: 0.2420  coco/bbox_mAP_s: 0.1460  coco/bbox_mAP_m: 0.3590  coco/bbox_mAP_l: 0.4790  data_time: 0.0613  time: 0.1166
+2024/07/24 11:47:10 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_160.pth is removed
+2024/07/24 11:47:11 - mmengine - INFO - The best checkpoint with 0.2400 coco/bbox_mAP at 170 epoch is saved to best_coco_bbox_mAP_epoch_170.pth.
+2024/07/24 11:47:24 - mmengine - INFO - Epoch(train) [171][50/51]  base_lr: 8.0000e-02 lr: 3.5384e-02  eta: 0:25:55  time: 0.2312  data_time: 0.0193  memory: 12341  grad_norm: 73.1131  loss: 373.9128  loss_cls: 102.2076  loss_bbox: 157.0110  loss_dfl: 114.6942
+2024/07/24 11:47:24 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:47:35 - mmengine - INFO - Epoch(train) [172][50/51]  base_lr: 8.0000e-02 lr: 3.5120e-02  eta: 0:25:43  time: 0.2336  data_time: 0.0199  memory: 12741  grad_norm: 74.7010  loss: 373.3729  loss_cls: 102.1765  loss_bbox: 156.7504  loss_dfl: 114.4460
+2024/07/24 11:47:36 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:47:47 - mmengine - INFO - Epoch(train) [173][50/51]  base_lr: 8.0000e-02 lr: 3.4856e-02  eta: 0:25:31  time: 0.2353  data_time: 0.0200  memory: 12275  grad_norm: 74.1457  loss: 372.5300  loss_cls: 101.3389  loss_bbox: 156.3124  loss_dfl: 114.8787
+2024/07/24 11:47:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:47:59 - mmengine - INFO - Epoch(train) [174][50/51]  base_lr: 8.0000e-02 lr: 3.4592e-02  eta: 0:25:19  time: 0.2380  data_time: 0.0178  memory: 12981  grad_norm: 74.3953  loss: 373.5090  loss_cls: 101.9479  loss_bbox: 156.7879  loss_dfl: 114.7732
+2024/07/24 11:47:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:48:11 - mmengine - INFO - Epoch(train) [175][50/51]  base_lr: 8.0000e-02 lr: 3.4328e-02  eta: 0:25:07  time: 0.2380  data_time: 0.0185  memory: 12915  grad_norm: 72.7560  loss: 371.4843  loss_cls: 100.7992  loss_bbox: 156.6328  loss_dfl: 114.0523
+2024/07/24 11:48:12 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:48:23 - mmengine - INFO - Epoch(train) [176][50/51]  base_lr: 8.0000e-02 lr: 3.4064e-02  eta: 0:24:54  time: 0.2325  data_time: 0.0204  memory: 12395  grad_norm: 73.2029  loss: 373.5039  loss_cls: 101.7379  loss_bbox: 156.7452  loss_dfl: 115.0208
+2024/07/24 11:48:23 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:48:30 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:48:35 - mmengine - INFO - Epoch(train) [177][50/51]  base_lr: 8.0000e-02 lr: 3.3800e-02  eta: 0:24:42  time: 0.2383  data_time: 0.0181  memory: 12315  grad_norm: 73.8031  loss: 373.3603  loss_cls: 102.0267  loss_bbox: 156.7887  loss_dfl: 114.5450
+2024/07/24 11:48:35 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:48:47 - mmengine - INFO - Epoch(train) [178][50/51]  base_lr: 8.0000e-02 lr: 3.3536e-02  eta: 0:24:30  time: 0.2322  data_time: 0.0230  memory: 13675  grad_norm: 75.1612  loss: 373.0719  loss_cls: 101.6674  loss_bbox: 156.5707  loss_dfl: 114.8338
+2024/07/24 11:48:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:48:59 - mmengine - INFO - Epoch(train) [179][50/51]  base_lr: 8.0000e-02 lr: 3.3272e-02  eta: 0:24:18  time: 0.2389  data_time: 0.0183  memory: 12888  grad_norm: 74.5673  loss: 370.0385  loss_cls: 100.4477  loss_bbox: 154.4804  loss_dfl: 115.1104
+2024/07/24 11:48:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:49:11 - mmengine - INFO - Epoch(train) [180][50/51]  base_lr: 8.0000e-02 lr: 3.3008e-02  eta: 0:24:06  time: 0.2372  data_time: 0.0232  memory: 12341  grad_norm: 73.7099  loss: 370.3345  loss_cls: 100.8243  loss_bbox: 155.3546  loss_dfl: 114.1556
+2024/07/24 11:49:11 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:49:11 - mmengine - INFO - Saving checkpoint at 180 epochs
+2024/07/24 11:49:15 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:49:39 - mmengine - INFO - bbox_mAP_copypaste: 0.241 0.404 0.242 0.147 0.361 0.465
+2024/07/24 11:49:39 - mmengine - INFO - Epoch(val) [180][5/5]    coco/bbox_mAP: 0.2410  coco/bbox_mAP_50: 0.4040  coco/bbox_mAP_75: 0.2420  coco/bbox_mAP_s: 0.1470  coco/bbox_mAP_m: 0.3610  coco/bbox_mAP_l: 0.4650  data_time: 0.0454  time: 0.0998
+2024/07/24 11:49:39 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_170.pth is removed
+2024/07/24 11:49:40 - mmengine - INFO - The best checkpoint with 0.2410 coco/bbox_mAP at 180 epoch is saved to best_coco_bbox_mAP_epoch_180.pth.
+2024/07/24 11:49:53 - mmengine - INFO - Epoch(train) [181][50/51]  base_lr: 8.0000e-02 lr: 3.2744e-02  eta: 0:23:54  time: 0.2331  data_time: 0.0223  memory: 12195  grad_norm: 75.1410  loss: 368.3851  loss_cls: 99.6688  loss_bbox: 154.8040  loss_dfl: 113.9123
+2024/07/24 11:49:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:50:05 - mmengine - INFO - Epoch(train) [182][50/51]  base_lr: 8.0000e-02 lr: 3.2480e-02  eta: 0:23:42  time: 0.2317  data_time: 0.0184  memory: 12035  grad_norm: 74.5553  loss: 370.5432  loss_cls: 100.7445  loss_bbox: 155.5141  loss_dfl: 114.2846
+2024/07/24 11:50:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:50:17 - mmengine - INFO - Epoch(train) [183][50/51]  base_lr: 8.0000e-02 lr: 3.2216e-02  eta: 0:23:29  time: 0.2343  data_time: 0.0189  memory: 12448  grad_norm: 74.6183  loss: 373.7878  loss_cls: 101.2881  loss_bbox: 157.1351  loss_dfl: 115.3646
+2024/07/24 11:50:17 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:50:29 - mmengine - INFO - Epoch(train) [184][50/51]  base_lr: 8.0000e-02 lr: 3.1952e-02  eta: 0:23:17  time: 0.2370  data_time: 0.0199  memory: 12835  grad_norm: 76.0714  loss: 371.0527  loss_cls: 100.1131  loss_bbox: 156.4923  loss_dfl: 114.4474
+2024/07/24 11:50:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:50:41 - mmengine - INFO - Epoch(train) [185][50/51]  base_lr: 8.0000e-02 lr: 3.1688e-02  eta: 0:23:05  time: 0.2363  data_time: 0.0216  memory: 12195  grad_norm: 76.4288  loss: 369.4436  loss_cls: 98.8788  loss_bbox: 155.5871  loss_dfl: 114.9777
+2024/07/24 11:50:41 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:50:52 - mmengine - INFO - Epoch(train) [186][50/51]  base_lr: 8.0000e-02 lr: 3.1424e-02  eta: 0:22:53  time: 0.2324  data_time: 0.0227  memory: 13155  grad_norm: 73.4086  loss: 365.3382  loss_cls: 98.1315  loss_bbox: 153.3236  loss_dfl: 113.8831
+2024/07/24 11:50:52 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:51:04 - mmengine - INFO - Epoch(train) [187][50/51]  base_lr: 8.0000e-02 lr: 3.1160e-02  eta: 0:22:41  time: 0.2363  data_time: 0.0172  memory: 16208  grad_norm: 73.0369  loss: 365.6141  loss_cls: 98.9584  loss_bbox: 152.8793  loss_dfl: 113.7764
+2024/07/24 11:51:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:51:16 - mmengine - INFO - Epoch(train) [188][50/51]  base_lr: 8.0000e-02 lr: 3.0896e-02  eta: 0:22:29  time: 0.2385  data_time: 0.0179  memory: 11955  grad_norm: 76.3925  loss: 367.7275  loss_cls: 98.6212  loss_bbox: 154.0954  loss_dfl: 115.0110
+2024/07/24 11:51:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:51:28 - mmengine - INFO - Epoch(train) [189][50/51]  base_lr: 8.0000e-02 lr: 3.0632e-02  eta: 0:22:17  time: 0.2412  data_time: 0.0178  memory: 14648  grad_norm: 76.4282  loss: 369.9306  loss_cls: 99.4529  loss_bbox: 155.9673  loss_dfl: 114.5104
+2024/07/24 11:51:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:51:40 - mmengine - INFO - Epoch(train) [190][50/51]  base_lr: 8.0000e-02 lr: 3.0368e-02  eta: 0:22:05  time: 0.2355  data_time: 0.0186  memory: 13541  grad_norm: 74.8656  loss: 364.0345  loss_cls: 97.7390  loss_bbox: 152.5031  loss_dfl: 113.7924
+2024/07/24 11:51:41 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:51:41 - mmengine - INFO - Saving checkpoint at 190 epochs
+2024/07/24 11:51:44 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:52:09 - mmengine - INFO - bbox_mAP_copypaste: 0.242 0.407 0.246 0.149 0.362 0.466
+2024/07/24 11:52:09 - mmengine - INFO - Epoch(val) [190][5/5]    coco/bbox_mAP: 0.2420  coco/bbox_mAP_50: 0.4070  coco/bbox_mAP_75: 0.2460  coco/bbox_mAP_s: 0.1490  coco/bbox_mAP_m: 0.3620  coco/bbox_mAP_l: 0.4660  data_time: 0.0486  time: 0.1033
+2024/07/24 11:52:09 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_180.pth is removed
+2024/07/24 11:52:10 - mmengine - INFO - The best checkpoint with 0.2420 coco/bbox_mAP at 190 epoch is saved to best_coco_bbox_mAP_epoch_190.pth.
+2024/07/24 11:52:22 - mmengine - INFO - Epoch(train) [191][50/51]  base_lr: 8.0000e-02 lr: 3.0104e-02  eta: 0:21:52  time: 0.2276  data_time: 0.0197  memory: 13635  grad_norm: 75.6680  loss: 364.6903  loss_cls: 97.6848  loss_bbox: 152.5343  loss_dfl: 114.4712
+2024/07/24 11:52:22 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:52:35 - mmengine - INFO - Epoch(train) [192][50/51]  base_lr: 8.0000e-02 lr: 2.9840e-02  eta: 0:21:41  time: 0.2450  data_time: 0.0191  memory: 13448  grad_norm: 75.7728  loss: 366.8098  loss_cls: 98.6370  loss_bbox: 154.4804  loss_dfl: 113.6924
+2024/07/24 11:52:35 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:52:46 - mmengine - INFO - Epoch(train) [193][50/51]  base_lr: 8.0000e-02 lr: 2.9576e-02  eta: 0:21:28  time: 0.2334  data_time: 0.0174  memory: 11541  grad_norm: 76.5007  loss: 366.2151  loss_cls: 98.1652  loss_bbox: 154.1072  loss_dfl: 113.9427
+2024/07/24 11:52:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:52:58 - mmengine - INFO - Epoch(train) [194][50/51]  base_lr: 8.0000e-02 lr: 2.9312e-02  eta: 0:21:16  time: 0.2352  data_time: 0.0206  memory: 13928  grad_norm: 74.8546  loss: 365.2943  loss_cls: 98.2893  loss_bbox: 153.1638  loss_dfl: 113.8411
+2024/07/24 11:52:58 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:53:10 - mmengine - INFO - Epoch(train) [195][50/51]  base_lr: 8.0000e-02 lr: 2.9048e-02  eta: 0:21:04  time: 0.2368  data_time: 0.0198  memory: 13141  grad_norm: 77.5023  loss: 361.9900  loss_cls: 96.2538  loss_bbox: 152.0797  loss_dfl: 113.6564
+2024/07/24 11:53:10 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:53:23 - mmengine - INFO - Epoch(train) [196][50/51]  base_lr: 8.0000e-02 lr: 2.8784e-02  eta: 0:20:52  time: 0.2409  data_time: 0.0171  memory: 12435  grad_norm: 76.8835  loss: 367.1110  loss_cls: 98.7201  loss_bbox: 154.1912  loss_dfl: 114.1998
+2024/07/24 11:53:23 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:53:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:53:34 - mmengine - INFO - Epoch(train) [197][50/51]  base_lr: 8.0000e-02 lr: 2.8520e-02  eta: 0:20:40  time: 0.2358  data_time: 0.0215  memory: 12541  grad_norm: 76.0335  loss: 366.0196  loss_cls: 98.0747  loss_bbox: 153.7809  loss_dfl: 114.1640
+2024/07/24 11:53:35 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:53:46 - mmengine - INFO - Epoch(train) [198][50/51]  base_lr: 8.0000e-02 lr: 2.8256e-02  eta: 0:20:28  time: 0.2369  data_time: 0.0173  memory: 11981  grad_norm: 77.3805  loss: 358.8392  loss_cls: 95.5834  loss_bbox: 149.6797  loss_dfl: 113.5760
+2024/07/24 11:53:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:53:58 - mmengine - INFO - Epoch(train) [199][50/51]  base_lr: 8.0000e-02 lr: 2.7992e-02  eta: 0:20:16  time: 0.2352  data_time: 0.0184  memory: 13728  grad_norm: 77.8688  loss: 362.5184  loss_cls: 96.6805  loss_bbox: 152.0793  loss_dfl: 113.7586
+2024/07/24 11:53:58 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:54:10 - mmengine - INFO - Epoch(train) [200][50/51]  base_lr: 8.0000e-02 lr: 2.7728e-02  eta: 0:20:04  time: 0.2337  data_time: 0.0188  memory: 13061  grad_norm: 77.9477  loss: 365.0783  loss_cls: 97.9452  loss_bbox: 153.6132  loss_dfl: 113.5199
+2024/07/24 11:54:10 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:54:10 - mmengine - INFO - Saving checkpoint at 200 epochs
+2024/07/24 11:54:14 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:54:39 - mmengine - INFO - bbox_mAP_copypaste: 0.244 0.408 0.248 0.151 0.364 0.474
+2024/07/24 11:54:39 - mmengine - INFO - Epoch(val) [200][5/5]    coco/bbox_mAP: 0.2440  coco/bbox_mAP_50: 0.4080  coco/bbox_mAP_75: 0.2480  coco/bbox_mAP_s: 0.1510  coco/bbox_mAP_m: 0.3640  coco/bbox_mAP_l: 0.4740  data_time: 0.0457  time: 0.0999
+2024/07/24 11:54:39 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_190.pth is removed
+2024/07/24 11:54:40 - mmengine - INFO - The best checkpoint with 0.2440 coco/bbox_mAP at 200 epoch is saved to best_coco_bbox_mAP_epoch_200.pth.
+2024/07/24 11:54:53 - mmengine - INFO - Epoch(train) [201][50/51]  base_lr: 8.0000e-02 lr: 2.7464e-02  eta: 0:19:52  time: 0.2330  data_time: 0.0201  memory: 13541  grad_norm: 77.4552  loss: 364.5807  loss_cls: 96.7313  loss_bbox: 153.9336  loss_dfl: 113.9158
+2024/07/24 11:54:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:55:05 - mmengine - INFO - Epoch(train) [202][50/51]  base_lr: 8.0000e-02 lr: 2.7200e-02  eta: 0:19:39  time: 0.2350  data_time: 0.0213  memory: 13675  grad_norm: 76.9357  loss: 359.9811  loss_cls: 95.3540  loss_bbox: 150.9273  loss_dfl: 113.6998
+2024/07/24 11:55:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:55:16 - mmengine - INFO - Epoch(train) [203][50/51]  base_lr: 8.0000e-02 lr: 2.6936e-02  eta: 0:19:27  time: 0.2331  data_time: 0.0230  memory: 12981  grad_norm: 80.1212  loss: 361.9303  loss_cls: 95.6772  loss_bbox: 152.6420  loss_dfl: 113.6111
+2024/07/24 11:55:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:55:28 - mmengine - INFO - Epoch(train) [204][50/51]  base_lr: 8.0000e-02 lr: 2.6672e-02  eta: 0:19:15  time: 0.2366  data_time: 0.0175  memory: 12888  grad_norm: 75.6391  loss: 359.0253  loss_cls: 95.4156  loss_bbox: 150.2487  loss_dfl: 113.3610
+2024/07/24 11:55:28 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:55:40 - mmengine - INFO - Epoch(train) [205][50/51]  base_lr: 8.0000e-02 lr: 2.6408e-02  eta: 0:19:03  time: 0.2337  data_time: 0.0170  memory: 12261  grad_norm: 78.9355  loss: 356.1531  loss_cls: 94.1667  loss_bbox: 149.0110  loss_dfl: 112.9753
+2024/07/24 11:55:40 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:55:52 - mmengine - INFO - Epoch(train) [206][50/51]  base_lr: 8.0000e-02 lr: 2.6144e-02  eta: 0:18:51  time: 0.2379  data_time: 0.0235  memory: 12355  grad_norm: 77.5675  loss: 358.6862  loss_cls: 95.5576  loss_bbox: 149.6864  loss_dfl: 113.4422
+2024/07/24 11:55:52 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:56:04 - mmengine - INFO - Epoch(train) [207][50/51]  base_lr: 8.0000e-02 lr: 2.5880e-02  eta: 0:18:39  time: 0.2349  data_time: 0.0195  memory: 12568  grad_norm: 78.3837  loss: 361.8629  loss_cls: 95.9497  loss_bbox: 152.3588  loss_dfl: 113.5544
+2024/07/24 11:56:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:56:16 - mmengine - INFO - Epoch(train) [208][50/51]  base_lr: 8.0000e-02 lr: 2.5616e-02  eta: 0:18:27  time: 0.2330  data_time: 0.0172  memory: 14261  grad_norm: 78.8534  loss: 356.4463  loss_cls: 94.1189  loss_bbox: 149.5640  loss_dfl: 112.7633
+2024/07/24 11:56:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:56:28 - mmengine - INFO - Epoch(train) [209][50/51]  base_lr: 8.0000e-02 lr: 2.5352e-02  eta: 0:18:15  time: 0.2366  data_time: 0.0176  memory: 13928  grad_norm: 77.8864  loss: 360.2515  loss_cls: 95.7637  loss_bbox: 151.4262  loss_dfl: 113.0615
+2024/07/24 11:56:28 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:56:40 - mmengine - INFO - Epoch(train) [210][50/51]  base_lr: 8.0000e-02 lr: 2.5088e-02  eta: 0:18:03  time: 0.2300  data_time: 0.0191  memory: 11835  grad_norm: 78.4273  loss: 358.1625  loss_cls: 94.6440  loss_bbox: 150.0331  loss_dfl: 113.4854
+2024/07/24 11:56:40 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:56:40 - mmengine - INFO - Saving checkpoint at 210 epochs
+2024/07/24 11:56:43 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:57:08 - mmengine - INFO - bbox_mAP_copypaste: 0.246 0.410 0.249 0.152 0.366 0.461
+2024/07/24 11:57:08 - mmengine - INFO - Epoch(val) [210][5/5]    coco/bbox_mAP: 0.2460  coco/bbox_mAP_50: 0.4100  coco/bbox_mAP_75: 0.2490  coco/bbox_mAP_s: 0.1520  coco/bbox_mAP_m: 0.3660  coco/bbox_mAP_l: 0.4610  data_time: 0.0501  time: 0.1053
+2024/07/24 11:57:08 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_200.pth is removed
+2024/07/24 11:57:09 - mmengine - INFO - The best checkpoint with 0.2460 coco/bbox_mAP at 210 epoch is saved to best_coco_bbox_mAP_epoch_210.pth.
+2024/07/24 11:57:22 - mmengine - INFO - Epoch(train) [211][50/51]  base_lr: 8.0000e-02 lr: 2.4824e-02  eta: 0:17:50  time: 0.2356  data_time: 0.0213  memory: 12528  grad_norm: 79.2748  loss: 357.4622  loss_cls: 93.9574  loss_bbox: 150.4315  loss_dfl: 113.0733
+2024/07/24 11:57:22 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:57:34 - mmengine - INFO - Epoch(train) [212][50/51]  base_lr: 8.0000e-02 lr: 2.4560e-02  eta: 0:17:38  time: 0.2330  data_time: 0.0178  memory: 12101  grad_norm: 76.9294  loss: 354.7848  loss_cls: 94.0666  loss_bbox: 148.1483  loss_dfl: 112.5699
+2024/07/24 11:57:34 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:57:46 - mmengine - INFO - Epoch(train) [213][50/51]  base_lr: 8.0000e-02 lr: 2.4296e-02  eta: 0:17:26  time: 0.2340  data_time: 0.0166  memory: 12101  grad_norm: 79.5631  loss: 357.0951  loss_cls: 94.1676  loss_bbox: 149.7423  loss_dfl: 113.1853
+2024/07/24 11:57:46 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:57:58 - mmengine - INFO - Epoch(train) [214][50/51]  base_lr: 8.0000e-02 lr: 2.4032e-02  eta: 0:17:14  time: 0.2359  data_time: 0.0215  memory: 12315  grad_norm: 79.6353  loss: 357.7720  loss_cls: 93.8421  loss_bbox: 150.7496  loss_dfl: 113.1803
+2024/07/24 11:57:58 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:58:09 - mmengine - INFO - Epoch(train) [215][50/51]  base_lr: 8.0000e-02 lr: 2.3768e-02  eta: 0:17:02  time: 0.2323  data_time: 0.0168  memory: 17421  grad_norm: 79.2008  loss: 352.4003  loss_cls: 92.4005  loss_bbox: 147.0692  loss_dfl: 112.9306
+2024/07/24 11:58:09 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:58:18 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:58:21 - mmengine - INFO - Epoch(train) [216][50/51]  base_lr: 8.0000e-02 lr: 2.3504e-02  eta: 0:16:50  time: 0.2314  data_time: 0.0194  memory: 12501  grad_norm: 79.6855  loss: 355.0114  loss_cls: 93.7201  loss_bbox: 148.0678  loss_dfl: 113.2235
+2024/07/24 11:58:21 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:58:33 - mmengine - INFO - Epoch(train) [217][50/51]  base_lr: 8.0000e-02 lr: 2.3240e-02  eta: 0:16:38  time: 0.2355  data_time: 0.0173  memory: 14195  grad_norm: 79.4316  loss: 355.5055  loss_cls: 93.4043  loss_bbox: 149.2808  loss_dfl: 112.8204
+2024/07/24 11:58:33 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:58:45 - mmengine - INFO - Epoch(train) [218][50/51]  base_lr: 8.0000e-02 lr: 2.2976e-02  eta: 0:16:26  time: 0.2357  data_time: 0.0221  memory: 13101  grad_norm: 79.9870  loss: 358.2784  loss_cls: 93.8472  loss_bbox: 151.3023  loss_dfl: 113.1289
+2024/07/24 11:58:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:58:57 - mmengine - INFO - Epoch(train) [219][50/51]  base_lr: 8.0000e-02 lr: 2.2712e-02  eta: 0:16:14  time: 0.2314  data_time: 0.0186  memory: 12141  grad_norm: 80.7962  loss: 356.0553  loss_cls: 93.1339  loss_bbox: 149.5406  loss_dfl: 113.3807
+2024/07/24 11:58:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:59:09 - mmengine - INFO - Epoch(train) [220][50/51]  base_lr: 8.0000e-02 lr: 2.2448e-02  eta: 0:16:02  time: 0.2379  data_time: 0.0210  memory: 12075  grad_norm: 79.4586  loss: 354.5626  loss_cls: 93.3740  loss_bbox: 148.3393  loss_dfl: 112.8493
+2024/07/24 11:59:09 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 11:59:09 - mmengine - INFO - Saving checkpoint at 220 epochs
+2024/07/24 11:59:12 - mmengine - INFO - Evaluating bbox...
+2024/07/24 11:59:37 - mmengine - INFO - bbox_mAP_copypaste: 0.247 0.415 0.250 0.154 0.367 0.470
+2024/07/24 11:59:37 - mmengine - INFO - Epoch(val) [220][5/5]    coco/bbox_mAP: 0.2470  coco/bbox_mAP_50: 0.4150  coco/bbox_mAP_75: 0.2500  coco/bbox_mAP_s: 0.1540  coco/bbox_mAP_m: 0.3670  coco/bbox_mAP_l: 0.4700  data_time: 0.0539  time: 0.1119
+2024/07/24 11:59:37 - mmengine - INFO - The previous best checkpoint /mnt/exam_log/0723_remdet/remdet_series/visdrone/remdet_s/best_coco_bbox_mAP_epoch_210.pth is removed
+2024/07/24 11:59:38 - mmengine - INFO - The best checkpoint with 0.2470 coco/bbox_mAP at 220 epoch is saved to best_coco_bbox_mAP_epoch_220.pth.
+2024/07/24 11:59:51 - mmengine - INFO - Epoch(train) [221][50/51]  base_lr: 8.0000e-02 lr: 2.2184e-02  eta: 0:15:50  time: 0.2381  data_time: 0.0234  memory: 12288  grad_norm: 80.2761  loss: 356.5826  loss_cls: 93.5416  loss_bbox: 150.0691  loss_dfl: 112.9718
+2024/07/24 11:59:51 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:00:03 - mmengine - INFO - Epoch(train) [222][50/51]  base_lr: 8.0000e-02 lr: 2.1920e-02  eta: 0:15:38  time: 0.2417  data_time: 0.0179  memory: 12435  grad_norm: 81.0009  loss: 356.6541  loss_cls: 93.6732  loss_bbox: 150.0629  loss_dfl: 112.9180
+2024/07/24 12:00:03 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:00:15 - mmengine - INFO - Epoch(train) [223][50/51]  base_lr: 8.0000e-02 lr: 2.1656e-02  eta: 0:15:26  time: 0.2415  data_time: 0.0181  memory: 14541  grad_norm: 78.7843  loss: 349.9708  loss_cls: 90.8902  loss_bbox: 146.1705  loss_dfl: 112.9101
+2024/07/24 12:00:15 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:00:27 - mmengine - INFO - Epoch(train) [224][50/51]  base_lr: 8.0000e-02 lr: 2.1392e-02  eta: 0:15:14  time: 0.2377  data_time: 0.0267  memory: 12208  grad_norm: 81.5130  loss: 351.0886  loss_cls: 91.3524  loss_bbox: 147.1578  loss_dfl: 112.5784
+2024/07/24 12:00:27 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:00:39 - mmengine - INFO - Epoch(train) [225][50/51]  base_lr: 8.0000e-02 lr: 2.1128e-02  eta: 0:15:02  time: 0.2372  data_time: 0.0211  memory: 12235  grad_norm: 81.2474  loss: 354.8887  loss_cls: 92.0654  loss_bbox: 149.7764  loss_dfl: 113.0468
+2024/07/24 12:00:39 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:00:51 - mmengine - INFO - Epoch(train) [226][50/51]  base_lr: 8.0000e-02 lr: 2.0864e-02  eta: 0:14:50  time: 0.2364  data_time: 0.0226  memory: 13261  grad_norm: 79.9407  loss: 352.6665  loss_cls: 92.0835  loss_bbox: 147.6162  loss_dfl: 112.9668
+2024/07/24 12:00:51 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:01:04 - mmengine - INFO - Epoch(train) [227][50/51]  base_lr: 8.0000e-02 lr: 2.0600e-02  eta: 0:14:38  time: 0.2440  data_time: 0.0179  memory: 17301  grad_norm: 81.4718  loss: 350.1735  loss_cls: 90.6874  loss_bbox: 147.2440  loss_dfl: 112.2420
+2024/07/24 12:01:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:01:15 - mmengine - INFO - Epoch(train) [228][50/51]  base_lr: 8.0000e-02 lr: 2.0336e-02  eta: 0:14:26  time: 0.2339  data_time: 0.0231  memory: 13221  grad_norm: 80.6494  loss: 348.3483  loss_cls: 90.4920  loss_bbox: 145.2838  loss_dfl: 112.5725
+2024/07/24 12:01:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:01:27 - mmengine - INFO - Epoch(train) [229][50/51]  base_lr: 8.0000e-02 lr: 2.0072e-02  eta: 0:14:13  time: 0.2326  data_time: 0.0214  memory: 13275  grad_norm: 83.2734  loss: 346.5731  loss_cls: 89.2723  loss_bbox: 145.1922  loss_dfl: 112.1086
+2024/07/24 12:01:27 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:01:39 - mmengine - INFO - Epoch(train) [230][50/51]  base_lr: 8.0000e-02 lr: 1.9808e-02  eta: 0:14:01  time: 0.2385  data_time: 0.0203  memory: 11995  grad_norm: 81.5401  loss: 345.8816  loss_cls: 88.8213  loss_bbox: 144.8722  loss_dfl: 112.1881
+2024/07/24 12:01:39 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:01:39 - mmengine - INFO - Saving checkpoint at 230 epochs
+2024/07/24 12:01:43 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:02:08 - mmengine - INFO - bbox_mAP_copypaste: 0.246 0.411 0.248 0.152 0.367 0.473
+2024/07/24 12:02:08 - mmengine - INFO - Epoch(val) [230][5/5]    coco/bbox_mAP: 0.2460  coco/bbox_mAP_50: 0.4110  coco/bbox_mAP_75: 0.2480  coco/bbox_mAP_s: 0.1520  coco/bbox_mAP_m: 0.3670  coco/bbox_mAP_l: 0.4730  data_time: 0.0500  time: 0.1038
+2024/07/24 12:02:21 - mmengine - INFO - Epoch(train) [231][50/51]  base_lr: 8.0000e-02 lr: 1.9544e-02  eta: 0:13:50  time: 0.2580  data_time: 0.0206  memory: 18435  grad_norm: 79.8367  loss: 350.0804  loss_cls: 90.8439  loss_bbox: 146.8192  loss_dfl: 112.4173
+2024/07/24 12:02:21 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:02:33 - mmengine - INFO - Epoch(train) [232][50/51]  base_lr: 8.0000e-02 lr: 1.9280e-02  eta: 0:13:38  time: 0.2557  data_time: 0.0170  memory: 12995  grad_norm: 81.7395  loss: 344.4187  loss_cls: 88.4275  loss_bbox: 144.0708  loss_dfl: 111.9203
+2024/07/24 12:02:34 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:02:45 - mmengine - INFO - Epoch(train) [233][50/51]  base_lr: 8.0000e-02 lr: 1.9016e-02  eta: 0:13:26  time: 0.2369  data_time: 0.0178  memory: 13115  grad_norm: 83.6763  loss: 346.5116  loss_cls: 89.3033  loss_bbox: 144.9409  loss_dfl: 112.2674
+2024/07/24 12:02:46 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:02:57 - mmengine - INFO - Epoch(train) [234][50/51]  base_lr: 8.0000e-02 lr: 1.8752e-02  eta: 0:13:14  time: 0.2333  data_time: 0.0177  memory: 16528  grad_norm: 82.3298  loss: 346.1776  loss_cls: 89.0398  loss_bbox: 144.8376  loss_dfl: 112.3002
+2024/07/24 12:02:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:03:09 - mmengine - INFO - Epoch(train) [235][50/51]  base_lr: 8.0000e-02 lr: 1.8488e-02  eta: 0:13:02  time: 0.2302  data_time: 0.0169  memory: 12155  grad_norm: 82.4196  loss: 347.9730  loss_cls: 88.9405  loss_bbox: 146.4093  loss_dfl: 112.6232
+2024/07/24 12:03:09 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:03:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:03:21 - mmengine - INFO - Epoch(train) [236][50/51]  base_lr: 8.0000e-02 lr: 1.8224e-02  eta: 0:12:50  time: 0.2331  data_time: 0.0193  memory: 12475  grad_norm: 84.1001  loss: 350.1552  loss_cls: 90.4900  loss_bbox: 147.1401  loss_dfl: 112.5251
+2024/07/24 12:03:21 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:03:33 - mmengine - INFO - Epoch(train) [237][50/51]  base_lr: 8.0000e-02 lr: 1.7960e-02  eta: 0:12:38  time: 0.2369  data_time: 0.0217  memory: 13221  grad_norm: 82.5865  loss: 341.6340  loss_cls: 87.3831  loss_bbox: 142.5819  loss_dfl: 111.6690
+2024/07/24 12:03:33 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:03:45 - mmengine - INFO - Epoch(train) [238][50/51]  base_lr: 8.0000e-02 lr: 1.7696e-02  eta: 0:12:26  time: 0.2384  data_time: 0.0180  memory: 14955  grad_norm: 82.1284  loss: 349.4522  loss_cls: 90.1784  loss_bbox: 147.3012  loss_dfl: 111.9726
+2024/07/24 12:03:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:03:57 - mmengine - INFO - Epoch(train) [239][50/51]  base_lr: 8.0000e-02 lr: 1.7432e-02  eta: 0:12:13  time: 0.2368  data_time: 0.0190  memory: 12195  grad_norm: 84.5066  loss: 343.3868  loss_cls: 87.6863  loss_bbox: 144.2316  loss_dfl: 111.4690
+2024/07/24 12:03:57 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:04:09 - mmengine - INFO - Epoch(train) [240][50/51]  base_lr: 8.0000e-02 lr: 1.7168e-02  eta: 0:12:01  time: 0.2345  data_time: 0.0171  memory: 12715  grad_norm: 82.7295  loss: 349.5475  loss_cls: 90.0447  loss_bbox: 147.2028  loss_dfl: 112.3000
+2024/07/24 12:04:09 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:04:09 - mmengine - INFO - Saving checkpoint at 240 epochs
+2024/07/24 12:04:12 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:04:37 - mmengine - INFO - bbox_mAP_copypaste: 0.246 0.414 0.249 0.153 0.368 0.464
+2024/07/24 12:04:37 - mmengine - INFO - Epoch(val) [240][5/5]    coco/bbox_mAP: 0.2460  coco/bbox_mAP_50: 0.4140  coco/bbox_mAP_75: 0.2490  coco/bbox_mAP_s: 0.1530  coco/bbox_mAP_m: 0.3680  coco/bbox_mAP_l: 0.4640  data_time: 0.0440  time: 0.0978
+2024/07/24 12:04:49 - mmengine - INFO - Epoch(train) [241][50/51]  base_lr: 8.0000e-02 lr: 1.6904e-02  eta: 0:11:49  time: 0.2376  data_time: 0.0216  memory: 13221  grad_norm: 84.5594  loss: 348.2306  loss_cls: 89.3868  loss_bbox: 146.8811  loss_dfl: 111.9627
+2024/07/24 12:04:49 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:05:01 - mmengine - INFO - Epoch(train) [242][50/51]  base_lr: 8.0000e-02 lr: 1.6640e-02  eta: 0:11:37  time: 0.2322  data_time: 0.0198  memory: 13328  grad_norm: 82.6540  loss: 345.1999  loss_cls: 88.3918  loss_bbox: 144.9803  loss_dfl: 111.8278
+2024/07/24 12:05:01 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:05:13 - mmengine - INFO - Epoch(train) [243][50/51]  base_lr: 8.0000e-02 lr: 1.6376e-02  eta: 0:11:25  time: 0.2378  data_time: 0.0227  memory: 12541  grad_norm: 84.6036  loss: 340.0588  loss_cls: 86.0422  loss_bbox: 142.4610  loss_dfl: 111.5556
+2024/07/24 12:05:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:05:25 - mmengine - INFO - Epoch(train) [244][50/51]  base_lr: 8.0000e-02 lr: 1.6112e-02  eta: 0:11:13  time: 0.2375  data_time: 0.0181  memory: 13421  grad_norm: 86.2308  loss: 344.7752  loss_cls: 87.7668  loss_bbox: 145.0582  loss_dfl: 111.9503
+2024/07/24 12:05:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:05:37 - mmengine - INFO - Epoch(train) [245][50/51]  base_lr: 8.0000e-02 lr: 1.5848e-02  eta: 0:11:01  time: 0.2361  data_time: 0.0227  memory: 12128  grad_norm: 84.6592  loss: 341.5471  loss_cls: 87.4908  loss_bbox: 142.4819  loss_dfl: 111.5744
+2024/07/24 12:05:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:05:49 - mmengine - INFO - Epoch(train) [246][50/51]  base_lr: 8.0000e-02 lr: 1.5584e-02  eta: 0:10:49  time: 0.2377  data_time: 0.0219  memory: 16848  grad_norm: 83.3210  loss: 340.4650  loss_cls: 85.9282  loss_bbox: 143.0064  loss_dfl: 111.5305
+2024/07/24 12:05:49 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:06:00 - mmengine - INFO - Epoch(train) [247][50/51]  base_lr: 8.0000e-02 lr: 1.5320e-02  eta: 0:10:37  time: 0.2335  data_time: 0.0196  memory: 13701  grad_norm: 84.7723  loss: 341.4970  loss_cls: 86.2907  loss_bbox: 143.5878  loss_dfl: 111.6185
+2024/07/24 12:06:01 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:06:12 - mmengine - INFO - Epoch(train) [248][50/51]  base_lr: 8.0000e-02 lr: 1.5056e-02  eta: 0:10:25  time: 0.2385  data_time: 0.0186  memory: 12261  grad_norm: 85.2651  loss: 341.6017  loss_cls: 86.7757  loss_bbox: 143.3707  loss_dfl: 111.4553
+2024/07/24 12:06:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:06:25 - mmengine - INFO - Epoch(train) [249][50/51]  base_lr: 8.0000e-02 lr: 1.4792e-02  eta: 0:10:13  time: 0.2409  data_time: 0.0203  memory: 12515  grad_norm: 84.5185  loss: 341.9097  loss_cls: 86.8183  loss_bbox: 143.2338  loss_dfl: 111.8575
+2024/07/24 12:06:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:06:36 - mmengine - INFO - Epoch(train) [250][50/51]  base_lr: 8.0000e-02 lr: 1.4528e-02  eta: 0:10:01  time: 0.2326  data_time: 0.0175  memory: 12168  grad_norm: 86.4210  loss: 342.2032  loss_cls: 87.2281  loss_bbox: 143.4683  loss_dfl: 111.5069
+2024/07/24 12:06:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:06:37 - mmengine - INFO - Saving checkpoint at 250 epochs
+2024/07/24 12:06:40 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:07:04 - mmengine - INFO - bbox_mAP_copypaste: 0.246 0.412 0.247 0.154 0.365 0.457
+2024/07/24 12:07:04 - mmengine - INFO - Epoch(val) [250][5/5]    coco/bbox_mAP: 0.2460  coco/bbox_mAP_50: 0.4120  coco/bbox_mAP_75: 0.2470  coco/bbox_mAP_s: 0.1540  coco/bbox_mAP_m: 0.3650  coco/bbox_mAP_l: 0.4570  data_time: 0.0420  time: 0.0953
+2024/07/24 12:07:16 - mmengine - INFO - Epoch(train) [251][50/51]  base_lr: 8.0000e-02 lr: 1.4264e-02  eta: 0:09:49  time: 0.2380  data_time: 0.0199  memory: 11395  grad_norm: 84.6008  loss: 340.7072  loss_cls: 85.9716  loss_bbox: 142.6842  loss_dfl: 112.0515
+2024/07/24 12:07:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:07:28 - mmengine - INFO - Epoch(train) [252][50/51]  base_lr: 8.0000e-02 lr: 1.4000e-02  eta: 0:09:37  time: 0.2399  data_time: 0.0205  memory: 11515  grad_norm: 85.0732  loss: 337.1772  loss_cls: 85.2149  loss_bbox: 140.2459  loss_dfl: 111.7165
+2024/07/24 12:07:29 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:07:41 - mmengine - INFO - Epoch(train) [253][50/51]  base_lr: 8.0000e-02 lr: 1.3736e-02  eta: 0:09:25  time: 0.2410  data_time: 0.0187  memory: 12981  grad_norm: 84.5763  loss: 339.2480  loss_cls: 85.6898  loss_bbox: 142.3329  loss_dfl: 111.2253
+2024/07/24 12:07:41 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:07:52 - mmengine - INFO - Epoch(train) [254][50/51]  base_lr: 8.0000e-02 lr: 1.3472e-02  eta: 0:09:13  time: 0.2335  data_time: 0.0198  memory: 11661  grad_norm: 86.9943  loss: 333.9743  loss_cls: 83.6156  loss_bbox: 139.4631  loss_dfl: 110.8956
+2024/07/24 12:07:53 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:08:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:08:04 - mmengine - INFO - Epoch(train) [255][50/51]  base_lr: 8.0000e-02 lr: 1.3208e-02  eta: 0:09:01  time: 0.2362  data_time: 0.0193  memory: 15101  grad_norm: 86.4933  loss: 337.8117  loss_cls: 84.3980  loss_bbox: 142.1705  loss_dfl: 111.2431
+2024/07/24 12:08:05 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:08:16 - mmengine - INFO - Epoch(train) [256][50/51]  base_lr: 8.0000e-02 lr: 1.2944e-02  eta: 0:08:49  time: 0.2359  data_time: 0.0197  memory: 13301  grad_norm: 87.6630  loss: 337.4326  loss_cls: 84.7275  loss_bbox: 141.4870  loss_dfl: 111.2181
+2024/07/24 12:08:16 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:08:28 - mmengine - INFO - Epoch(train) [257][50/51]  base_lr: 8.0000e-02 lr: 1.2680e-02  eta: 0:08:37  time: 0.2371  data_time: 0.0203  memory: 13168  grad_norm: 87.2769  loss: 338.7271  loss_cls: 85.1434  loss_bbox: 142.3108  loss_dfl: 111.2729
+2024/07/24 12:08:28 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:08:40 - mmengine - INFO - Epoch(train) [258][50/51]  base_lr: 8.0000e-02 lr: 1.2416e-02  eta: 0:08:25  time: 0.2352  data_time: 0.0176  memory: 12915  grad_norm: 85.8905  loss: 334.8744  loss_cls: 83.8160  loss_bbox: 140.2673  loss_dfl: 110.7911
+2024/07/24 12:08:40 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:08:52 - mmengine - INFO - Epoch(train) [259][50/51]  base_lr: 8.0000e-02 lr: 1.2152e-02  eta: 0:08:13  time: 0.2371  data_time: 0.0173  memory: 12688  grad_norm: 86.2758  loss: 332.9672  loss_cls: 83.0824  loss_bbox: 139.0000  loss_dfl: 110.8847
+2024/07/24 12:08:52 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:09:04 - mmengine - INFO - Epoch(train) [260][50/51]  base_lr: 8.0000e-02 lr: 1.1888e-02  eta: 0:08:01  time: 0.2332  data_time: 0.0188  memory: 14941  grad_norm: 87.8398  loss: 335.5290  loss_cls: 83.7429  loss_bbox: 140.0270  loss_dfl: 111.7591
+2024/07/24 12:09:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:09:04 - mmengine - INFO - Saving checkpoint at 260 epochs
+2024/07/24 12:09:08 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:09:32 - mmengine - INFO - bbox_mAP_copypaste: 0.246 0.412 0.249 0.154 0.366 0.462
+2024/07/24 12:09:32 - mmengine - INFO - Epoch(val) [260][5/5]    coco/bbox_mAP: 0.2460  coco/bbox_mAP_50: 0.4120  coco/bbox_mAP_75: 0.2490  coco/bbox_mAP_s: 0.1540  coco/bbox_mAP_m: 0.3660  coco/bbox_mAP_l: 0.4620  data_time: 0.0367  time: 0.0908
+2024/07/24 12:09:44 - mmengine - INFO - Epoch(train) [261][50/51]  base_lr: 8.0000e-02 lr: 1.1624e-02  eta: 0:07:49  time: 0.2353  data_time: 0.0222  memory: 12195  grad_norm: 86.4229  loss: 331.6019  loss_cls: 82.1003  loss_bbox: 138.5251  loss_dfl: 110.9764
+2024/07/24 12:09:44 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:09:56 - mmengine - INFO - Epoch(train) [262][50/51]  base_lr: 8.0000e-02 lr: 1.1360e-02  eta: 0:07:37  time: 0.2338  data_time: 0.0168  memory: 14021  grad_norm: 90.3721  loss: 337.9279  loss_cls: 84.7220  loss_bbox: 141.7069  loss_dfl: 111.4990
+2024/07/24 12:09:56 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:10:08 - mmengine - INFO - Epoch(train) [263][50/51]  base_lr: 8.0000e-02 lr: 1.1096e-02  eta: 0:07:25  time: 0.2361  data_time: 0.0182  memory: 12608  grad_norm: 88.0551  loss: 333.4768  loss_cls: 82.7269  loss_bbox: 139.4061  loss_dfl: 111.3439
+2024/07/24 12:10:08 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:10:19 - mmengine - INFO - Epoch(train) [264][50/51]  base_lr: 8.0000e-02 lr: 1.0832e-02  eta: 0:07:12  time: 0.2322  data_time: 0.0178  memory: 12341  grad_norm: 86.7207  loss: 332.1758  loss_cls: 82.6271  loss_bbox: 138.7327  loss_dfl: 110.8160
+2024/07/24 12:10:19 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:10:31 - mmengine - INFO - Epoch(train) [265][50/51]  base_lr: 8.0000e-02 lr: 1.0568e-02  eta: 0:07:00  time: 0.2357  data_time: 0.0181  memory: 14021  grad_norm: 89.3860  loss: 330.1094  loss_cls: 82.1687  loss_bbox: 137.2107  loss_dfl: 110.7300
+2024/07/24 12:10:31 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:10:44 - mmengine - INFO - Epoch(train) [266][50/51]  base_lr: 8.0000e-02 lr: 1.0304e-02  eta: 0:06:48  time: 0.2451  data_time: 0.0186  memory: 12875  grad_norm: 86.7629  loss: 328.0676  loss_cls: 80.8995  loss_bbox: 136.4633  loss_dfl: 110.7049
+2024/07/24 12:10:44 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:10:56 - mmengine - INFO - Epoch(train) [267][50/51]  base_lr: 8.0000e-02 lr: 1.0040e-02  eta: 0:06:36  time: 0.2409  data_time: 0.0221  memory: 14261  grad_norm: 89.4460  loss: 328.6698  loss_cls: 80.8225  loss_bbox: 137.6688  loss_dfl: 110.1785
+2024/07/24 12:10:56 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:11:08 - mmengine - INFO - Epoch(train) [268][50/51]  base_lr: 8.0000e-02 lr: 9.7760e-03  eta: 0:06:24  time: 0.2344  data_time: 0.0178  memory: 12408  grad_norm: 88.5600  loss: 329.8554  loss_cls: 80.9724  loss_bbox: 138.0267  loss_dfl: 110.8563
+2024/07/24 12:11:08 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:11:20 - mmengine - INFO - Epoch(train) [269][50/51]  base_lr: 8.0000e-02 lr: 9.5120e-03  eta: 0:06:12  time: 0.2339  data_time: 0.0180  memory: 13248  grad_norm: 89.1969  loss: 326.8029  loss_cls: 80.2995  loss_bbox: 136.1081  loss_dfl: 110.3954
+2024/07/24 12:11:20 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:11:31 - mmengine - INFO - Epoch(train) [270][50/51]  base_lr: 8.0000e-02 lr: 9.2480e-03  eta: 0:06:00  time: 0.2343  data_time: 0.0203  memory: 13261  grad_norm: 87.6197  loss: 329.8725  loss_cls: 81.1344  loss_bbox: 138.2576  loss_dfl: 110.4805
+2024/07/24 12:11:32 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:11:32 - mmengine - INFO - Saving checkpoint at 270 epochs
+2024/07/24 12:11:35 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:11:59 - mmengine - INFO - bbox_mAP_copypaste: 0.245 0.412 0.248 0.153 0.365 0.462
+2024/07/24 12:11:59 - mmengine - INFO - Epoch(val) [270][5/5]    coco/bbox_mAP: 0.2450  coco/bbox_mAP_50: 0.4120  coco/bbox_mAP_75: 0.2480  coco/bbox_mAP_s: 0.1530  coco/bbox_mAP_m: 0.3650  coco/bbox_mAP_l: 0.4620  data_time: 0.0538  time: 0.1060
+2024/07/24 12:12:11 - mmengine - INFO - Epoch(train) [271][50/51]  base_lr: 8.0000e-02 lr: 8.9840e-03  eta: 0:05:48  time: 0.2350  data_time: 0.0219  memory: 12181  grad_norm: 88.5456  loss: 327.3196  loss_cls: 80.1840  loss_bbox: 136.9857  loss_dfl: 110.1499
+2024/07/24 12:12:11 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:12:23 - mmengine - INFO - Epoch(train) [272][50/51]  base_lr: 8.0000e-02 lr: 8.7200e-03  eta: 0:05:36  time: 0.2360  data_time: 0.0178  memory: 11675  grad_norm: 89.2716  loss: 325.3990  loss_cls: 79.4569  loss_bbox: 135.9298  loss_dfl: 110.0122
+2024/07/24 12:12:23 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:12:35 - mmengine - INFO - Epoch(train) [273][50/51]  base_lr: 8.0000e-02 lr: 8.4560e-03  eta: 0:05:24  time: 0.2393  data_time: 0.0181  memory: 13021  grad_norm: 91.1094  loss: 329.2203  loss_cls: 80.5747  loss_bbox: 138.1113  loss_dfl: 110.5344
+2024/07/24 12:12:35 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:12:47 - mmengine - INFO - Epoch(train) [274][50/51]  base_lr: 8.0000e-02 lr: 8.1920e-03  eta: 0:05:12  time: 0.2350  data_time: 0.0175  memory: 11728  grad_norm: 90.7285  loss: 324.8808  loss_cls: 78.8893  loss_bbox: 135.8084  loss_dfl: 110.1831
+2024/07/24 12:12:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:12:54 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:12:59 - mmengine - INFO - Epoch(train) [275][50/51]  base_lr: 8.0000e-02 lr: 7.9280e-03  eta: 0:05:00  time: 0.2411  data_time: 0.0177  memory: 15674  grad_norm: 89.7569  loss: 322.9995  loss_cls: 78.5506  loss_bbox: 134.4754  loss_dfl: 109.9735
+2024/07/24 12:12:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:13:11 - mmengine - INFO - Epoch(train) [276][50/51]  base_lr: 8.0000e-02 lr: 7.6640e-03  eta: 0:04:48  time: 0.2369  data_time: 0.0177  memory: 13381  grad_norm: 89.6640  loss: 326.3327  loss_cls: 79.3656  loss_bbox: 136.9701  loss_dfl: 109.9970
+2024/07/24 12:13:11 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:13:23 - mmengine - INFO - Epoch(train) [277][50/51]  base_lr: 8.0000e-02 lr: 7.4000e-03  eta: 0:04:36  time: 0.2327  data_time: 0.0203  memory: 12768  grad_norm: 90.3559  loss: 324.3330  loss_cls: 78.5819  loss_bbox: 135.3938  loss_dfl: 110.3573
+2024/07/24 12:13:23 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:13:35 - mmengine - INFO - Epoch(train) [278][50/51]  base_lr: 8.0000e-02 lr: 7.1360e-03  eta: 0:04:24  time: 0.2325  data_time: 0.0187  memory: 12408  grad_norm: 89.0466  loss: 323.1640  loss_cls: 78.3869  loss_bbox: 134.9793  loss_dfl: 109.7979
+2024/07/24 12:13:35 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:13:47 - mmengine - INFO - Epoch(train) [279][50/51]  base_lr: 8.0000e-02 lr: 6.8720e-03  eta: 0:04:12  time: 0.2333  data_time: 0.0190  memory: 14568  grad_norm: 90.1867  loss: 320.3356  loss_cls: 77.5014  loss_bbox: 133.3890  loss_dfl: 109.4452
+2024/07/24 12:13:47 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:13:58 - mmengine - INFO - Epoch(train) [280][50/51]  base_lr: 8.0000e-02 lr: 6.6080e-03  eta: 0:04:00  time: 0.2344  data_time: 0.0169  memory: 11648  grad_norm: 89.7372  loss: 321.5945  loss_cls: 77.7622  loss_bbox: 134.1490  loss_dfl: 109.6834
+2024/07/24 12:13:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:13:59 - mmengine - INFO - Saving checkpoint at 280 epochs
+2024/07/24 12:14:02 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:14:26 - mmengine - INFO - bbox_mAP_copypaste: 0.245 0.411 0.246 0.153 0.363 0.472
+2024/07/24 12:14:26 - mmengine - INFO - Epoch(val) [280][5/5]    coco/bbox_mAP: 0.2450  coco/bbox_mAP_50: 0.4110  coco/bbox_mAP_75: 0.2460  coco/bbox_mAP_s: 0.1530  coco/bbox_mAP_m: 0.3630  coco/bbox_mAP_l: 0.4720  data_time: 0.0478  time: 0.1060
+2024/07/24 12:14:38 - mmengine - INFO - Epoch(train) [281][50/51]  base_lr: 8.0000e-02 lr: 6.3440e-03  eta: 0:03:48  time: 0.2395  data_time: 0.0228  memory: 12275  grad_norm: 89.1742  loss: 319.4637  loss_cls: 77.3905  loss_bbox: 132.2231  loss_dfl: 109.8502
+2024/07/24 12:14:38 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:14:50 - mmengine - INFO - Epoch(train) [282][50/51]  base_lr: 8.0000e-02 lr: 6.0800e-03  eta: 0:03:36  time: 0.2314  data_time: 0.0196  memory: 11475  grad_norm: 88.1893  loss: 321.1224  loss_cls: 77.2409  loss_bbox: 133.8080  loss_dfl: 110.0736
+2024/07/24 12:14:50 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:15:02 - mmengine - INFO - Epoch(train) [283][50/51]  base_lr: 8.0000e-02 lr: 5.8160e-03  eta: 0:03:24  time: 0.2376  data_time: 0.0193  memory: 13701  grad_norm: 90.4606  loss: 318.3167  loss_cls: 76.4540  loss_bbox: 131.6662  loss_dfl: 110.1966
+2024/07/24 12:15:02 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:15:14 - mmengine - INFO - Epoch(train) [284][50/51]  base_lr: 8.0000e-02 lr: 5.5520e-03  eta: 0:03:12  time: 0.2335  data_time: 0.0172  memory: 12448  grad_norm: 89.4577  loss: 318.3961  loss_cls: 76.3634  loss_bbox: 132.8074  loss_dfl: 109.2253
+2024/07/24 12:15:14 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:15:26 - mmengine - INFO - Epoch(train) [285][50/51]  base_lr: 8.0000e-02 lr: 5.2880e-03  eta: 0:03:00  time: 0.2340  data_time: 0.0172  memory: 11928  grad_norm: 90.2430  loss: 318.2210  loss_cls: 75.9040  loss_bbox: 132.7069  loss_dfl: 109.6101
+2024/07/24 12:15:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:15:37 - mmengine - INFO - Epoch(train) [286][50/51]  base_lr: 8.0000e-02 lr: 5.0240e-03  eta: 0:02:48  time: 0.2317  data_time: 0.0180  memory: 11648  grad_norm: 90.1435  loss: 316.1081  loss_cls: 75.4090  loss_bbox: 131.5111  loss_dfl: 109.1879
+2024/07/24 12:15:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:15:49 - mmengine - INFO - Epoch(train) [287][50/51]  base_lr: 8.0000e-02 lr: 4.7600e-03  eta: 0:02:36  time: 0.2361  data_time: 0.0228  memory: 12315  grad_norm: 89.6028  loss: 316.5145  loss_cls: 75.6047  loss_bbox: 131.5747  loss_dfl: 109.3351
+2024/07/24 12:15:49 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:16:01 - mmengine - INFO - Epoch(train) [288][50/51]  base_lr: 8.0000e-02 lr: 4.4960e-03  eta: 0:02:24  time: 0.2357  data_time: 0.0177  memory: 13901  grad_norm: 90.1836  loss: 313.1676  loss_cls: 74.6212  loss_bbox: 129.6352  loss_dfl: 108.9113
+2024/07/24 12:16:01 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:16:13 - mmengine - INFO - Epoch(train) [289][50/51]  base_lr: 8.0000e-02 lr: 4.2320e-03  eta: 0:02:12  time: 0.2312  data_time: 0.0175  memory: 12381  grad_norm: 90.5564  loss: 314.2973  loss_cls: 74.6411  loss_bbox: 130.5829  loss_dfl: 109.0734
+2024/07/24 12:16:13 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:16:25 - mmengine - INFO - Epoch(train) [290][50/51]  base_lr: 8.0000e-02 lr: 3.9680e-03  eta: 0:02:00  time: 0.2314  data_time: 0.0192  memory: 12435  grad_norm: 90.7064  loss: 316.4937  loss_cls: 75.0140  loss_bbox: 132.4046  loss_dfl: 109.0751
+2024/07/24 12:16:25 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:16:25 - mmengine - INFO - Saving checkpoint at 290 epochs
+2024/07/24 12:16:28 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:16:53 - mmengine - INFO - bbox_mAP_copypaste: 0.244 0.410 0.245 0.153 0.361 0.466
+2024/07/24 12:16:53 - mmengine - INFO - Epoch(val) [290][5/5]    coco/bbox_mAP: 0.2440  coco/bbox_mAP_50: 0.4100  coco/bbox_mAP_75: 0.2450  coco/bbox_mAP_s: 0.1530  coco/bbox_mAP_m: 0.3610  coco/bbox_mAP_l: 0.4660  data_time: 0.0513  time: 0.1108
+2024/07/24 12:16:53 - mmengine - INFO - Switch pipeline now!
+2024/07/24 12:17:04 - mmengine - INFO - Epoch(train) [291][50/51]  base_lr: 8.0000e-02 lr: 3.7040e-03  eta: 0:01:48  time: 0.2309  data_time: 0.0264  memory: 10821  grad_norm: nan  loss: 314.2815  loss_cls: 74.4480  loss_bbox: 130.3586  loss_dfl: 109.4749
+2024/07/24 12:17:04 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:17:15 - mmengine - INFO - Epoch(train) [292][50/51]  base_lr: 8.0000e-02 lr: 3.4400e-03  eta: 0:01:36  time: 0.2170  data_time: 0.0113  memory: 13395  grad_norm: 116.4245  loss: 308.5440  loss_cls: 72.0614  loss_bbox: 127.4213  loss_dfl: 109.0613
+2024/07/24 12:17:15 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:17:26 - mmengine - INFO - Epoch(train) [293][50/51]  base_lr: 8.0000e-02 lr: 3.1760e-03  eta: 0:01:24  time: 0.2147  data_time: 0.0125  memory: 11048  grad_norm: 113.7219  loss: 307.3146  loss_cls: 71.0786  loss_bbox: 127.1822  loss_dfl: 109.0539
+2024/07/24 12:17:26 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:17:37 - mmengine - INFO - Epoch(train) [294][50/51]  base_lr: 8.0000e-02 lr: 2.9120e-03  eta: 0:01:12  time: 0.2175  data_time: 0.0102  memory: 11941  grad_norm: 112.6355  loss: 304.3907  loss_cls: 69.8063  loss_bbox: 126.0940  loss_dfl: 108.4903
+2024/07/24 12:17:37 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:17:39 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:17:48 - mmengine - INFO - Epoch(train) [295][50/51]  base_lr: 8.0000e-02 lr: 2.6480e-03  eta: 0:01:00  time: 0.2141  data_time: 0.0110  memory: 12568  grad_norm: 110.6277  loss: 305.7765  loss_cls: 70.2134  loss_bbox: 126.6971  loss_dfl: 108.8661
+2024/07/24 12:17:48 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:17:59 - mmengine - INFO - Epoch(train) [296][50/51]  base_lr: 8.0000e-02 lr: 2.3840e-03  eta: 0:00:48  time: 0.2239  data_time: 0.0110  memory: 11941  grad_norm: 111.5413  loss: 303.6263  loss_cls: 69.2004  loss_bbox: 125.6655  loss_dfl: 108.7604
+2024/07/24 12:17:59 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:18:11 - mmengine - INFO - Epoch(train) [297][50/51]  base_lr: 8.0000e-02 lr: 2.1200e-03  eta: 0:00:36  time: 0.2276  data_time: 0.0102  memory: 11355  grad_norm: 108.5913  loss: 305.6519  loss_cls: 69.9659  loss_bbox: 126.8228  loss_dfl: 108.8632
+2024/07/24 12:18:11 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:18:23 - mmengine - INFO - Epoch(train) [298][50/51]  base_lr: 8.0000e-02 lr: 1.8560e-03  eta: 0:00:24  time: 0.2367  data_time: 0.0107  memory: 11008  grad_norm: 109.8164  loss: 303.9472  loss_cls: 69.3613  loss_bbox: 126.0005  loss_dfl: 108.5854
+2024/07/24 12:18:23 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:18:34 - mmengine - INFO - Epoch(train) [299][50/51]  base_lr: 8.0000e-02 lr: 1.5920e-03  eta: 0:00:12  time: 0.2232  data_time: 0.0110  memory: 13395  grad_norm: 109.5222  loss: 302.9397  loss_cls: 69.0881  loss_bbox: 125.5014  loss_dfl: 108.3502
+2024/07/24 12:18:34 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:18:45 - mmengine - INFO - Epoch(train) [300][50/51]  base_lr: 8.0000e-02 lr: 1.3280e-03  eta: 0:00:00  time: 0.2129  data_time: 0.0109  memory: 10555  grad_norm: 107.6464  loss: 299.2718  loss_cls: 68.0233  loss_bbox: 123.3257  loss_dfl: 107.9228
+2024/07/24 12:18:45 - mmengine - INFO - Exp name: remdet_s-300e_visdrone_20240724_110347
+2024/07/24 12:18:45 - mmengine - INFO - Saving checkpoint at 300 epochs
+2024/07/24 12:18:49 - mmengine - INFO - Evaluating bbox...
+2024/07/24 12:19:13 - mmengine - INFO - bbox_mAP_copypaste: 0.244 0.409 0.245 0.153 0.360 0.453
+2024/07/24 12:19:13 - mmengine - INFO - Epoch(val) [300][5/5]    coco/bbox_mAP: 0.2440  coco/bbox_mAP_50: 0.4090  coco/bbox_mAP_75: 0.2450  coco/bbox_mAP_s: 0.1530  coco/bbox_mAP_m: 0.3600  coco/bbox_mAP_l: 0.4530  data_time: 0.0481  time: 0.1055

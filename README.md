@@ -35,13 +35,13 @@ We will release of pretrained model weights.
 ## Main results
 
 ### Object Detection Performance for [VisDrone2019](https://github.com/VisDrone/VisDrone-Dataset):
-|     Model      |  AP  | AP<sub>50</sub> | AP<sub>75</sub> | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> | #Params | FLOPs |                         Log                         |
-|:--------------:|:----:|:---------------:|:---------------:|:--------------:|:--------------:|:--------------:|:-------:|:-----:|:---------------------------------------------------:|
-|  RemDet-Tiny   | 21.8 |      37.1       |      21.9       |      12.7      |      33.0      |      44.5      |  3.2M   | 4.6G  |  [log](resources/remdet_tiny/20240724_133030.log)   |
-|    RemDet-S    | 24.7 |      41.5       |      25.0       |      15.4      |      36.7      |      47.0      |  11.9M  | 16.0G |    [log](resources/remdet_s/20240724_110347.log)    |
-|    RemDet-M    | 27.3 |      44.7       |      28.2       |      17.3      |      40.5      |      57.8      |  23.3M  | 34.4G |    [log](resources/remdet_m/20240724_083541.log)    |
-|    RemDet-L    | 29.3 |      47.4       |      30.3       |      18.7      |      43.4      |      55.8      |  35.3M  | 66.7G |    [log](resources/remdet_l/20240724_055016.log)    |
-|    RemDet-X    | 29.9 |      48.3       |      31.0       |      19.5      |      44.1      |      58.6      |  74.1M  | 112G  |   [log](resources/remdet_x/20240728_082805.log)     |
+|     Model      |  AP  | AP<sub>50</sub> | AP<sub>75</sub> | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> | #Params | FLOPs |                                             Log                                             |
+|:--------------:|:----:|:---------------:|:---------------:|:--------------:|:--------------:|:--------------:|:-------:|:-----:|:-------------------------------------------------------------------------------------------:|
+|  RemDet-Tiny   | 21.8 |      37.1       |      21.9       |      12.7      |      33.0      |      44.5      |  3.2M   | 4.6G  | [log](resources/remdet_tiny/20240724_133030.log) & [pth](https://drive.google.com/file/d/1oN4FrKJbOh62KhrPzyIoZwWoBlRVhvrr/view?usp=drive_link) |
+|    RemDet-S    | 24.7 |      41.5       |      25.0       |      15.4      |      36.7      |      47.0      |  11.9M  | 16.0G |    [log](resources/remdet_s/20240724_110347.log) & [pth](https://drive.google.com/file/d/1VT77Ym_jXDy4ywWQixVWhfSg_y0ztTXi/view?usp=drive_link)    |
+|    RemDet-M    | 27.3 |      44.7       |      28.2       |      17.3      |      40.5      |      57.8      |  23.3M  | 34.4G |  [log](resources/remdet_m/20240724_083541.log)   & [pth](https://drive.google.com/file/d/14IufO3OHv1J--wYQ_3Pjqf1F76VgZ9Ne/view?usp=drive_link)  |
+|    RemDet-L    | 29.3 |      47.4       |      30.3       |      18.7      |      43.4      |      55.8      |  35.3M  | 66.7G |                        [log](resources/remdet_l/20240724_055016.log) & [pth](https://drive.google.com/file/d/1rxXDXgHqL7jJlxSw2HALRlQCx--XCy-V/view?usp=drive_link)                        |
+|    RemDet-X    | 29.9 |      48.3       |      31.0       |      19.5      |      44.1      |      58.6      |  74.1M  | 112G  |                        [log](resources/remdet_x/20240728_082805.log) & [pth](https://drive.google.com/file/d/1kkEVzW8X1b7QizywHOWI17EoQVfQUQz3/view?usp=drive_link)                       |
 
 ### Object Detection Performance for [COCO2017](https://cocodataset.org):
 |    Model    |  AP  | AP<sub>50</sub> | AP<sub>75</sub> | AP<sub>S</sub> | AP<sub>M</sub> | AP<sub>L</sub> |                          Log                          |
