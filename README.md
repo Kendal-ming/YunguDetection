@@ -27,11 +27,6 @@ Comparison of the core innovations of the proposed RemDet:
 </div>
 
 
-## Coming Soon
-
-We will release of pretrained model weights.
-
-
 ## Main results
 
 ### Object Detection Performance for [VisDrone2019](https://github.com/VisDrone/VisDrone-Dataset):
