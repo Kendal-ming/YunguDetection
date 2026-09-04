@@ -1,4 +1,14 @@
-# RemDet
+# YunguDetection
+
+本仓库基于官方 [RemDet](https://github.com/HZAI-ZJNU/RemDet) 进行二次开发，
+面向轻量、高效的无人机视频小目标检测。我们保留了原始 RemDet 模型与配置，
+并在 [`remdet_video`](remdet_video/README.md) 中增加了视频推理、首次出现检测、
+阈值与时序实验、ONNX/TensorRT 导出、Jetson Orin NX 部署和性能评测工具。
+
+模型权重、数据集、视频和实验输出体积较大，不存入 Git；使用说明与可复现实验
+入口请先阅读 [`remdet_video/README.md`](remdet_video/README.md)。
+
+## Upstream RemDet
 
 Official PyTorch implementation of "RemDet: Rethinking Efficient Model Design for UAV Object Detection" [AAAI 2025]
 

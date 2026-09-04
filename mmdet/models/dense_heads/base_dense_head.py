@@ -482,7 +482,13 @@ class BaseDenseHead(BaseModule, metaclass=ABCMeta):
         # TODO: deal with `with_nms` and `nms_cfg=None` in test_cfg
         if with_nms and results.bboxes.numel() > 0:
             bboxes = get_box_tensor(results.bboxes)
-            det_bboxes, keep_idxs = batched_nms(bboxes, results.scores,
+            # The locally built MMCV CUDA NMS kernel accepts FP32 only.
+            # Keep the network under AMP, but perform numerically sensitive
+            # post-processing in FP32 so mixed-precision inference remains
+            # portable across MMCV builds.
+            nms_bboxes = bboxes.float()
+            nms_scores = results.scores.float()
+            det_bboxes, keep_idxs = batched_nms(nms_bboxes, nms_scores,
                                                 results.labels, cfg.nms)
             results = results[keep_idxs]
             # some nms would reweight the score, such as softnms

@@ -1,8 +1,12 @@
+import os
+
 _base_ = ['../_base_/yolo_default_runtime.py', '../_base_/det_p5_tta.py']
 
 # ========================Frequently modified parameters======================
 # -----data related-----
-data_root = '/mnt/datasets/VisDrone2019-DET-COCO/'  # Root path of data
+data_root = os.environ.get(
+    'VISDRONE_DATA_ROOT', '../datasets/VisDrone2019-DET-COCO/')
+data_root = data_root.replace('\\', '/').rstrip('/') + '/'
 # Path of train annotation file
 train_ann_file = 'annotations/VisDrone2019-DET_train_coco.json'
 train_data_prefix = 'images/train'  # Prefix of train image path

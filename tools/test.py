@@ -5,6 +5,7 @@ import os.path as osp
 import warnings
 from copy import deepcopy
 
+import torch
 from mmengine import ConfigDict
 from mmengine.config import Config, DictAction
 from mmengine.runner import Runner
@@ -53,6 +54,10 @@ def parse_args():
         default='none',
         help='job launcher')
     parser.add_argument('--tta', action='store_true')
+    parser.add_argument(
+        '--amp',
+        action='store_true',
+        help='Run testing under CUDA automatic mixed precision (FP16 compute).')
     # When using PyTorch version >= 2.0.0, the `torch.distributed.launch`
     # will pass the `--local-rank` parameter to `tools/train.py` instead
     # of `--local_rank`.
@@ -142,7 +147,13 @@ def main():
             DumpDetResults(out_file_path=args.out))
 
     # start testing
-    runner.test()
+    if args.amp:
+        if not torch.cuda.is_available():
+            raise RuntimeError('--amp requires an available CUDA GPU.')
+        with torch.autocast(device_type='cuda', dtype=torch.float16):
+            runner.test()
+    else:
+        runner.test()
     # model = runner.model.backbone
 
 
